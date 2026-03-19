@@ -125,7 +125,30 @@ function PhoneDemo() {
   );
 }
 
-function PricingCard({ name, price, desc, who, features, missing, featured, onCta }) {
+function PricingCard({ name, price, desc, who, features, missing, featured, planId }) {
+  const [loading, setLoading] = useState(false);
+
+  async function handleCheckout() {
+    setLoading(true);
+    try {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/stripe/create-checkout`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ plan: planId }),
+      });
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        alert("Something went wrong. Please try again.");
+      }
+    } catch (err) {
+      alert("Could not connect to payment server. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <div style={{ background:"#fff", border:featured?`2px solid ${ACCENT}`:`1px solid ${BORDER}`, borderRadius:16, padding:28, position:"relative", boxShadow:featured?"0 8px 32px rgba(22,163,74,0.1)":"none" }}>
       {featured && <div style={{ position:"absolute", top:-13, left:"50%", transform:"translateX(-50%)", background:ACCENT, color:"#fff", fontSize:11, fontWeight:600, padding:"3px 14px", borderRadius:20, whiteSpace:"nowrap" }}>MOST POPULAR</div>}
@@ -133,8 +156,11 @@ function PricingCard({ name, price, desc, who, features, missing, featured, onCt
       <div style={{ fontSize:38, fontWeight:700, color:TEXT, letterSpacing:"-0.03em", lineHeight:1, marginBottom:4 }}>{price}<span style={{ fontSize:15, fontWeight:400, color:MUTED }}>/mo</span></div>
       <div style={{ fontSize:13, color:MUTED, marginBottom:6 }}>{desc}</div>
       <div style={{ fontSize:12, color:MUTED2, marginBottom:20, fontStyle:"italic" }}>{who}</div>
-      <button onClick={onCta} style={{ width:"100%", padding:"11px", marginBottom:24, fontSize:14, borderRadius:8, cursor:"pointer", fontFamily:"inherit", background:featured?ACCENT:"transparent", color:featured?"#fff":TEXT, border:featured?"none":`1px solid ${BORDER}`, fontWeight:featured?600:500 }}>
-        {featured?"Start free trial →":"Start free trial"}
+      <button
+        onClick={handleCheckout}
+        disabled={loading}
+        style={{ width:"100%", padding:"11px", marginBottom:24, fontSize:14, borderRadius:8, cursor:loading?"wait":"pointer", fontFamily:"inherit", background:featured?ACCENT:"transparent", color:featured?"#fff":TEXT, border:featured?"none":`1px solid ${BORDER}`, fontWeight:featured?600:500, opacity:loading?0.7:1 }}>
+        {loading ? "Redirecting…" : featured ? "Start free trial →" : "Start free trial"}
       </button>
       {features.map(f => (
         <div key={f} style={{ display:"flex", alignItems:"center", gap:8, marginBottom:8, fontSize:13, color:TEXT }}>
@@ -396,14 +422,13 @@ export default function QualyLeadsLanding() {
           <PricingCard name="Starter" price="€49" desc="Perfect for getting started" who="Gyms · Plumbers · New coaches"
             features={["Up to 100 leads / month","1 industry blueprint","AI-powered SMS replies","Lead dashboard","Email support"]}
             missing={["Follow-up sequences","WhatsApp","Custom AI voice","White-label"]}
-            onCta={()=>scrollTo("cta-email")} />
+            planId="starter" />
           <PricingCard name="Growth" price="€99" desc="For businesses scaling fast" who="Agencies · Coaches · Growing gyms"
             features={["Up to 500 leads / month","All industry blueprints","AI-powered SMS + WhatsApp","Follow-up sequences","Full dashboard + analytics","Custom AI tone & voice","Priority support"]}
-            missing={["White-label"]} featured
-            onCta={()=>scrollTo("cta-email")} />
+            missing={["White-label"]} featured planId="growth" />
           <PricingCard name="Pro" price="€249" desc="At scale, your way" who="Influencers · High-ticket coaches · Resellers"
             features={["Unlimited leads","All blueprints + custom","SMS + WhatsApp + Instagram DM","Advanced follow-up flows","White-label (your brand)","Custom AI training","Calendly auto-booking","Dedicated onboarding call"]}
-            onCta={()=>scrollTo("cta-email")} />
+            planId="pro" />
         </div>
 
         <div className="faq-grid">
