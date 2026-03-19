@@ -219,7 +219,7 @@ export default function QualyLeadsLanding() {
       {/* NAV */}
       <nav style={{ position:"sticky", top:0, zIndex:100, background:"rgba(255,255,255,0.95)", backdropFilter:"blur(12px)", borderBottom:`1px solid ${BORDER}` }}>
         <div style={{ padding:"0 24px", height:60, display:"flex", alignItems:"center", justifyContent:"space-between", maxWidth:1200, margin:"0 auto" }}>
-          <img src={logoSrc} alt="QualyLeads" style={{ height:32, width:"auto" }} />
+          <img src={logoSrc} alt="QualyLeads" style={{ height:44, width:"auto" }} />
           <div className="nav-desktop">
             <span className="nav-link" onClick={()=>scrollTo("features")}>Features</span>
             <span className="nav-link" onClick={()=>scrollTo("pricing")}>Pricing</span>
@@ -444,7 +444,7 @@ export default function QualyLeadsLanding() {
       {/* FOOTER */}
       <footer style={{ borderTop:`1px solid ${BORDER}`, padding:"28px 24px", background:"#fff" }}>
         <div className="footer-inner" style={{ maxWidth:1100, margin:"0 auto" }}>
-          <img src={logoSrc} alt="QualyLeads" style={{ height:28, width:"auto" }} />
+          <img src={logoSrc} alt="QualyLeads" style={{ height:36, width:"auto" }} />
           <div style={{ fontSize:12, color:MUTED2 }}>© 2025 QualyLeads. Built to convert.</div>
           <div style={{ display:"flex", gap:20 }}>
             {["Privacy","Terms","Contact"].map(l=><span key={l} className="nav-link" style={{ fontSize:12 }}>{l}</span>)}
