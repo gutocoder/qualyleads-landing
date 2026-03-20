@@ -32,7 +32,7 @@ const ROI_DATA = [
 const FEATURES = [
   { icon:"⚡", title:"10-second response",   body:"Qualy texts every lead the moment they submit. No delays, no missed windows." },
   { icon:"🧠", title:"Industry blueprints",  body:"Gyms, plumbers, coaches — each gets a tailored conversation designed to convert." },
-  { icon:"📅", title:"Books appointments",   body:"Qualy doesn't just chat. It pushes toward a booking, tour, or call — every time." },
+  { icon:"📅", title:"Calendly auto-booking", body:"Qualy sends your Calendly link at the perfect moment and books calls automatically." },
   { icon:"🔁", title:"Full memory",          body:"Every reply is saved. Qualy picks up exactly where the conversation left off." },
   { icon:"📊", title:"Live dashboard",       body:"See every lead, every message, every status in real time. No spreadsheets." },
   { icon:"🔌", title:"Plug-in ready",        body:"Connect your CRM, Zapier, or form tool in minutes. No code required." },
@@ -179,8 +179,26 @@ function PricingCard({ name, price, desc, who, features, missing, featured, plan
 export default function QualyLeadsLanding() {
   const [email, setEmail]         = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [menuOpen, setMenuOpen]   = useState(false);
   const scrollTo = (id) => { document.getElementById(id)?.scrollIntoView({behavior:"smooth"}); setMenuOpen(false); };
+
+  async function joinWaitlist() {
+    if (!email || !email.includes("@")) return;
+    setSubmitting(true);
+    try {
+      await fetch(`${import.meta.env.VITE_BACKEND_URL}/waitlist/join`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      setSubmitted(true);
+    } catch (err) {
+      alert("Something went wrong. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
+  }
 
   return (
     <div style={{ background:BG, color:TEXT, minHeight:"100vh", fontFamily:"'DM Sans',system-ui,sans-serif", overflowX:"hidden" }}>
@@ -250,7 +268,7 @@ export default function QualyLeadsLanding() {
             <span className="nav-link" onClick={()=>scrollTo("features")}>Features</span>
             <span className="nav-link" onClick={()=>scrollTo("pricing")}>Pricing</span>
             <span className="nav-link" onClick={()=>scrollTo("phone-demo")}>Demo</span>
-            <button className="cta-primary" style={{ padding:"8px 20px", fontSize:13 }} onClick={()=>scrollTo("pricing")}>Get early access</button>
+            <button className="cta-primary" style={{ padding:"8px 20px", fontSize:13 }} onClick={()=>scrollTo("pricing")}>Join waitlist</button>
           </div>
           <button className="nav-mobile-btn" onClick={()=>setMenuOpen(!menuOpen)}>
             <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
@@ -266,7 +284,7 @@ export default function QualyLeadsLanding() {
           <div className="mobile-menu-item" onClick={()=>scrollTo("pricing")}>Pricing</div>
           <div className="mobile-menu-item" onClick={()=>scrollTo("phone-demo")}>Demo</div>
           <div style={{ padding:"12px 24px" }}>
-            <button className="cta-primary" style={{ width:"100%", padding:"12px" }} onClick={()=>scrollTo("pricing")}>Get early access</button>
+            <button className="cta-primary" style={{ width:"100%", padding:"12px" }} onClick={()=>scrollTo("pricing")}>Join waitlist</button>
           </div>
         </div>
       </nav>
@@ -411,56 +429,142 @@ export default function QualyLeadsLanding() {
       {/* PRICING */}
       <section id="pricing" className="section-pad" style={{ maxWidth:1100, margin:"0 auto" }}>
         <div style={{ textAlign:"center", marginBottom:48 }}>
-          <div style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:ACCENT, letterSpacing:"0.1em", textTransform:"uppercase", marginBottom:14 }}>Pricing</div>
+          <div style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:ACCENT, letterSpacing:"0.1em", textTransform:"uppercase", marginBottom:14 }}>Early access</div>
           <h2 style={{ fontFamily:"'DM Serif Display',serif", fontSize:"clamp(28px,3.5vw,48px)", lineHeight:1.1, letterSpacing:"-0.02em", color:TEXT, marginBottom:14 }}>
-            Simple pricing.<br /><span style={{ fontStyle:"italic", color:ACCENT }}>No surprises.</span>
+            First 50 sign ups get<br /><span style={{ fontStyle:"italic", color:ACCENT }}>50% off forever.</span>
           </h2>
-          <p style={{ fontSize:16, color:MUTED, maxWidth:460, margin:"0 auto" }}>Flat monthly plans — not per-lead. Know exactly what you're paying while you scale.</p>
-        </div>
+          <p style={{ fontSize:16, color:MUTED, maxWidth:500, margin:"0 auto 48px" }}>
+            QualyLeads is launching soon. Join the waitlist now and lock in your lifetime discount before spots run out.
+          </p>
 
-        <div className="pricing-grid">
-          <PricingCard name="Starter" price="€49" desc="Perfect for getting started" who="Gyms · Plumbers · New coaches"
-            features={["Up to 100 leads / month","1 industry blueprint","AI-powered SMS replies","Lead dashboard","Email support"]}
-            missing={["Follow-up sequences","WhatsApp","Custom AI voice","White-label"]}
-            planId="starter" />
-          <PricingCard name="Growth" price="€99" desc="For businesses scaling fast" who="Agencies · Coaches · Growing gyms"
-            features={["Up to 500 leads / month","All industry blueprints","AI-powered SMS + WhatsApp","Follow-up sequences","Full dashboard + analytics","Custom AI tone & voice","Priority support"]}
-            missing={["White-label"]} featured planId="growth" />
-          <PricingCard name="Pro" price="€249" desc="At scale, your way" who="Influencers · High-ticket coaches · Resellers"
-            features={["Unlimited leads","All blueprints + custom","SMS + WhatsApp + Instagram DM","Advanced follow-up flows","White-label (your brand)","Custom AI training","Calendly auto-booking","Dedicated onboarding call"]}
-            planId="pro" />
-        </div>
-
-        <div className="faq-grid">
-          {[
-            { q:"Can I switch plans?",       a:"Yes — upgrade or downgrade anytime. Changes take effect on your next billing date." },
-            { q:"What counts as a lead?",    a:"Any contact that hits your webhook — form submissions, CRM entries, Zapier triggers." },
-            { q:"Is there a free trial?",    a:"Yes, 14 days free on any plan. No credit card required to start." },
-          ].map((item,i)=>(
-            <div key={i} style={{ borderTop:`2px solid ${BORDER}`, paddingTop:18 }}>
-              <div style={{ fontSize:14, fontWeight:600, color:TEXT, marginBottom:8 }}>{item.q}</div>
-              <div style={{ fontSize:13, color:MUTED, lineHeight:1.6 }}>{item.a}</div>
+          {/* Spots counter */}
+          <div style={{ display:"inline-flex", alignItems:"center", gap:12, background:SURFACE, border:`1px solid ${BORDER}`, borderRadius:12, padding:"16px 28px", marginBottom:40 }}>
+            <div style={{ textAlign:"center" }}>
+              <div style={{ fontFamily:"'DM Serif Display',serif", fontSize:42, color:ACCENT, lineHeight:1, letterSpacing:"-0.02em" }}>50</div>
+              <div style={{ fontSize:12, color:MUTED, marginTop:2 }}>spots available</div>
             </div>
-          ))}
+            <div style={{ width:1, height:48, background:BORDER }} />
+            <div style={{ textAlign:"left" }}>
+              <div style={{ fontSize:14, fontWeight:600, color:TEXT, marginBottom:4 }}>What you get:</div>
+              <div style={{ fontSize:13, color:MUTED, lineHeight:1.7 }}>
+                ✓ 50% off your first month<br />
+                ✓ Early access before public launch<br />
+                ✓ Direct line to the founder
+              </div>
+            </div>
+          </div>
+
+          {/* Waitlist form */}
+          {!submitted ? (
+            <div style={{ maxWidth:480, margin:"0 auto" }}>
+              <div className="cta-email-row" style={{ marginBottom:12 }}>
+                <input
+                  id="cta-email"
+                  type="email"
+                  value={email}
+                  onChange={e=>setEmail(e.target.value)}
+                  onKeyDown={e=>e.key==="Enter"&&joinWaitlist()}
+                  placeholder="your@email.com"
+                  style={{ flex:1, padding:"14px 20px", background:"#fff", border:"none", color:TEXT, fontSize:15, outline:"none", fontFamily:"inherit" }}
+                />
+                <button className="cta-primary" style={{ borderRadius:0, whiteSpace:"nowrap" }} onClick={joinWaitlist} disabled={submitting}>
+                  {submitting ? "Saving…" : "Claim my spot →"}
+                </button>
+              </div>
+              <div style={{ fontSize:12, color:MUTED2 }}>No credit card required. We'll email you when we launch.</div>
+            </div>
+          ) : (
+            <div style={{ display:"inline-flex", flexDirection:"column", alignItems:"center", gap:8, background:"rgba(22,163,74,0.06)", border:"1px solid rgba(22,163,74,0.2)", borderRadius:12, padding:"20px 36px", color:ACCENT }}>
+              <div style={{ fontSize:20 }}>🎉</div>
+              <div style={{ fontSize:16, fontWeight:600, color:TEXT }}>You're on the list!</div>
+              <div style={{ fontSize:13, color:MUTED }}>We'll email you the moment QualyLeads launches.</div>
+            </div>
+          )}
+        </div>
+
+        {/* Pricing preview */}
+        <div style={{ marginTop:60, borderTop:`1px solid ${BORDER}`, paddingTop:48 }}>
+          <div style={{ textAlign:"center", marginBottom:32 }}>
+            <div style={{ fontSize:13, color:MUTED }}>Pricing after launch — waitlist members pay half on their first month</div>
+          </div>
+          <div className="pricing-grid">
+
+            {/* STARTER */}
+            <div style={{ background:SURFACE, border:`1px solid ${BORDER}`, borderRadius:16, padding:28 }}>
+              <div style={{ fontSize:12, fontWeight:600, color:MUTED, textTransform:"uppercase", letterSpacing:"0.06em", marginBottom:10 }}>Starter</div>
+              <div style={{ display:"flex", alignItems:"baseline", gap:10, marginBottom:6 }}>
+                <div style={{ fontSize:38, fontWeight:700, color:TEXT, letterSpacing:"-0.03em", lineHeight:1 }}>€49<span style={{ fontSize:15, fontWeight:400, color:MUTED }}>/mo</span></div>
+                <div style={{ fontSize:13, background:"rgba(22,163,74,0.1)", color:ACCENT, padding:"2px 10px", borderRadius:20, fontWeight:600 }}>→ €24.50 first month</div>
+              </div>
+              <div style={{ fontSize:12, color:MUTED, fontStyle:"italic", marginBottom:16 }}>Gyms · Plumbers · New coaches</div>
+              {["Up to 100 leads / month","1 industry blueprint","AI SMS replies","Calendly auto-booking","Lead dashboard","Email support"].map(f=>(
+                <div key={f} style={{ display:"flex", alignItems:"center", gap:8, marginBottom:7, fontSize:13, color:TEXT }}>
+                  <span style={{ width:16, height:16, borderRadius:"50%", background:"rgba(22,163,74,0.1)", color:ACCENT, display:"flex", alignItems:"center", justifyContent:"center", fontSize:9, flexShrink:0 }}>✓</span>{f}
+                </div>
+              ))}
+              {["WhatsApp","Follow-up sequences","White-label"].map(f=>(
+                <div key={f} style={{ display:"flex", alignItems:"center", gap:8, marginBottom:7, fontSize:13, color:MUTED2 }}>
+                  <span style={{ width:16, height:16, borderRadius:"50%", background:SURFACE2, display:"flex", alignItems:"center", justifyContent:"center", fontSize:9, flexShrink:0 }}>–</span>{f}
+                </div>
+              ))}
+            </div>
+
+            {/* GROWTH */}
+            <div style={{ background:"#fff", border:`2px solid ${ACCENT}`, borderRadius:16, padding:28, position:"relative", boxShadow:"0 8px 32px rgba(22,163,74,0.1)" }}>
+              <div style={{ position:"absolute", top:-13, left:"50%", transform:"translateX(-50%)", background:ACCENT, color:"#fff", fontSize:11, fontWeight:600, padding:"3px 14px", borderRadius:20, whiteSpace:"nowrap" }}>MOST POPULAR</div>
+              <div style={{ fontSize:12, fontWeight:600, color:ACCENT, textTransform:"uppercase", letterSpacing:"0.06em", marginBottom:10 }}>Growth</div>
+              <div style={{ display:"flex", alignItems:"baseline", gap:10, marginBottom:6 }}>
+                <div style={{ fontSize:38, fontWeight:700, color:TEXT, letterSpacing:"-0.03em", lineHeight:1 }}>€99<span style={{ fontSize:15, fontWeight:400, color:MUTED }}>/mo</span></div>
+                <div style={{ fontSize:13, background:"rgba(22,163,74,0.1)", color:ACCENT, padding:"2px 10px", borderRadius:20, fontWeight:600 }}>→ €49.50 first month</div>
+              </div>
+              <div style={{ fontSize:12, color:MUTED, fontStyle:"italic", marginBottom:16 }}>Agencies · Coaches · Growing gyms</div>
+              {["Up to 500 leads / month","All industry blueprints","AI SMS + WhatsApp","Calendly auto-booking","Follow-up sequences","Full dashboard + analytics","Priority support"].map(f=>(
+                <div key={f} style={{ display:"flex", alignItems:"center", gap:8, marginBottom:7, fontSize:13, color:TEXT }}>
+                  <span style={{ width:16, height:16, borderRadius:"50%", background:"rgba(22,163,74,0.1)", color:ACCENT, display:"flex", alignItems:"center", justifyContent:"center", fontSize:9, flexShrink:0 }}>✓</span>{f}
+                </div>
+              ))}
+              {["White-label"].map(f=>(
+                <div key={f} style={{ display:"flex", alignItems:"center", gap:8, marginBottom:7, fontSize:13, color:MUTED2 }}>
+                  <span style={{ width:16, height:16, borderRadius:"50%", background:SURFACE2, display:"flex", alignItems:"center", justifyContent:"center", fontSize:9, flexShrink:0 }}>–</span>{f}
+                </div>
+              ))}
+            </div>
+
+            {/* PRO */}
+            <div style={{ background:SURFACE, border:`1px solid ${BORDER}`, borderRadius:16, padding:28 }}>
+              <div style={{ fontSize:12, fontWeight:600, color:MUTED, textTransform:"uppercase", letterSpacing:"0.06em", marginBottom:10 }}>Pro</div>
+              <div style={{ display:"flex", alignItems:"baseline", gap:10, marginBottom:6 }}>
+                <div style={{ fontSize:38, fontWeight:700, color:TEXT, letterSpacing:"-0.03em", lineHeight:1 }}>€249<span style={{ fontSize:15, fontWeight:400, color:MUTED }}>/mo</span></div>
+                <div style={{ fontSize:13, background:"rgba(22,163,74,0.1)", color:ACCENT, padding:"2px 10px", borderRadius:20, fontWeight:600 }}>→ €124.50 first month</div>
+              </div>
+              <div style={{ fontSize:12, color:MUTED, fontStyle:"italic", marginBottom:16 }}>Influencers · High-ticket coaches · Resellers</div>
+              {["Unlimited leads","All blueprints + custom","AI SMS + WhatsApp","Calendly auto-booking","Advanced follow-up flows","White-label (your brand)","Custom AI training on your data","Dedicated onboarding call"].map(f=>(
+                <div key={f} style={{ display:"flex", alignItems:"center", gap:8, marginBottom:7, fontSize:13, color:TEXT }}>
+                  <span style={{ width:16, height:16, borderRadius:"50%", background:"rgba(22,163,74,0.1)", color:ACCENT, display:"flex", alignItems:"center", justifyContent:"center", fontSize:9, flexShrink:0 }}>✓</span>{f}
+                </div>
+              ))}
+            </div>
+
+          </div>
         </div>
       </section>
 
       {/* CTA */}
       <section id="demo" className="section-pad" style={{ textAlign:"center", background:SURFACE, borderTop:`1px solid ${BORDER}` }}>
-        <div style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:ACCENT, letterSpacing:"0.1em", textTransform:"uppercase", marginBottom:20 }}>Get started today</div>
+        <div style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:ACCENT, letterSpacing:"0.1em", textTransform:"uppercase", marginBottom:20 }}>Don't miss out</div>
         <h2 style={{ fontFamily:"'DM Serif Display',serif", fontSize:"clamp(32px,5vw,60px)", lineHeight:1.05, letterSpacing:"-0.03em", maxWidth:640, margin:"0 auto 16px", color:TEXT }}>
           Your next lead won't<br /><span style={{ fontStyle:"italic", color:ACCENT }}>wait for you.</span>
         </h2>
-        <p style={{ fontSize:16, color:MUTED, maxWidth:400, margin:"0 auto 36px" }}>14 days free. No credit card required. Set up in under 10 minutes.</p>
+        <p style={{ fontSize:16, color:MUTED, maxWidth:400, margin:"0 auto 36px" }}>Join 50 founding members and get 50% off your first month. Launch is coming soon.</p>
         {!submitted ? (
           <div className="cta-email-row">
             <input id="cta-email" type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="your@email.com"
               style={{ flex:1, padding:"14px 20px", background:"#fff", border:"none", color:TEXT, fontSize:15, outline:"none", fontFamily:"inherit" }} />
-            <button className="cta-primary" style={{ borderRadius:0, whiteSpace:"nowrap" }} onClick={()=>email&&setSubmitted(true)}>Get early access</button>
+            <button className="cta-primary" style={{ borderRadius:0, whiteSpace:"nowrap" }} onClick={joinWaitlist} disabled={submitting}>{submitting ? "Saving…" : "Claim my spot →"}</button>
           </div>
         ) : (
           <div style={{ display:"inline-flex", alignItems:"center", gap:10, background:"rgba(22,163,74,0.08)", border:"1px solid rgba(22,163,74,0.25)", borderRadius:10, padding:"14px 28px", color:ACCENT, fontSize:15 }}>
-            ✓ You're on the list — we'll be in touch!
+            🎉 You're on the list — we'll be in touch!
           </div>
         )}
         <p style={{ fontSize:12, color:MUTED2, marginTop:14 }}>Gyms · Plumbers · Agencies · Coaches · Influencers · Any business with inbound leads</p>
