@@ -181,6 +181,24 @@ export default function QualyLeadsLanding() {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [menuOpen, setMenuOpen]   = useState(false);
+  const [checkoutLoading, setCheckoutLoading] = useState(null);
+
+  async function startCheckout(plan) {
+    setCheckoutLoading(plan);
+    try {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/stripe/create-checkout`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ plan }),
+      });
+      const data = await res.json();
+      if (data.url) window.location.href = data.url;
+    } catch (err) {
+      console.error("Checkout error:", err);
+    } finally {
+      setCheckoutLoading(null);
+    }
+  }
   const scrollTo = (id) => { document.getElementById(id)?.scrollIntoView({behavior:"smooth"}); setMenuOpen(false); };
 
   async function joinWaitlist() {
@@ -268,7 +286,7 @@ export default function QualyLeadsLanding() {
             <span className="nav-link" onClick={()=>scrollTo("features")}>Features</span>
             <span className="nav-link" onClick={()=>scrollTo("pricing")}>Pricing</span>
             <span className="nav-link" onClick={()=>scrollTo("phone-demo")}>Demo</span>
-            <button className="cta-primary" style={{ padding:"8px 20px", fontSize:13 }} onClick={()=>scrollTo("pricing")}>Join waitlist</button>
+            <button className="cta-primary" style={{ padding:"8px 20px", fontSize:13 }} onClick={()=>scrollTo("pricing")}>Start free trial</button>
           </div>
           <button className="nav-mobile-btn" onClick={()=>setMenuOpen(!menuOpen)}>
             <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
@@ -284,7 +302,7 @@ export default function QualyLeadsLanding() {
           <div className="mobile-menu-item" onClick={()=>scrollTo("pricing")}>Pricing</div>
           <div className="mobile-menu-item" onClick={()=>scrollTo("phone-demo")}>Demo</div>
           <div style={{ padding:"12px 24px" }}>
-            <button className="cta-primary" style={{ width:"100%", padding:"12px" }} onClick={()=>scrollTo("pricing")}>Join waitlist</button>
+            <button className="cta-primary" style={{ width:"100%", padding:"12px" }} onClick={()=>scrollTo("pricing")}>Start free trial</button>
           </div>
         </div>
       </nav>
@@ -426,147 +444,119 @@ export default function QualyLeadsLanding() {
         </div>
       </section>
 
+      {/* WHATSAPP COMING SOON BANNER */}
+      <section style={{ background:"#f0fdf4", borderTop:`1px solid #bbf7d0`, borderBottom:`1px solid #bbf7d0`, padding:"16px 24px" }}>
+        <div style={{ maxWidth:1100, margin:"0 auto", display:"flex", alignItems:"center", justifyContent:"center", gap:12, flexWrap:"wrap" }}>
+          <span style={{ fontSize:20 }}>💬</span>
+          <span style={{ fontSize:14, fontWeight:600, color:"#15803d" }}>WhatsApp integration coming soon</span>
+          <span style={{ fontSize:13, color:"#16a34a" }}>— Qualy will qualify leads on WhatsApp too. Same speed, same AI, more reach.</span>
+          <span style={{ fontSize:11, fontWeight:600, background:"#16a34a", color:"#fff", padding:"2px 10px", borderRadius:20 }}>COMING SOON</span>
+        </div>
+      </section>
+
       {/* PRICING */}
       <section id="pricing" className="section-pad" style={{ maxWidth:1100, margin:"0 auto" }}>
         <div style={{ textAlign:"center", marginBottom:48 }}>
-          <div style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:ACCENT, letterSpacing:"0.1em", textTransform:"uppercase", marginBottom:14 }}>Early access</div>
+          <div style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:ACCENT, letterSpacing:"0.1em", textTransform:"uppercase", marginBottom:14 }}>Simple pricing</div>
           <h2 style={{ fontFamily:"'DM Serif Display',serif", fontSize:"clamp(28px,3.5vw,48px)", lineHeight:1.1, letterSpacing:"-0.02em", color:TEXT, marginBottom:14 }}>
-            First 50 sign ups get<br /><span style={{ fontStyle:"italic", color:ACCENT }}>50% off forever.</span>
+            Start converting leads<br /><span style={{ fontStyle:"italic", color:ACCENT }}>today.</span>
           </h2>
-          <p style={{ fontSize:16, color:MUTED, maxWidth:500, margin:"0 auto 48px" }}>
-            QualyLeads is launching soon. Join the waitlist now and lock in your lifetime discount before spots run out.
+          <p style={{ fontSize:16, color:MUTED, maxWidth:500, margin:"0 auto 16px" }}>
+            No setup fees. Cancel anytime. First 50 clients get 50% off their first month.
           </p>
-
-          {/* Spots counter */}
-          <div style={{ display:"inline-flex", alignItems:"center", gap:12, background:SURFACE, border:`1px solid ${BORDER}`, borderRadius:12, padding:"16px 28px", marginBottom:40 }}>
-            <div style={{ textAlign:"center" }}>
-              <div style={{ fontFamily:"'DM Serif Display',serif", fontSize:42, color:ACCENT, lineHeight:1, letterSpacing:"-0.02em" }}>50</div>
-              <div style={{ fontSize:12, color:MUTED, marginTop:2 }}>spots available</div>
-            </div>
-            <div style={{ width:1, height:48, background:BORDER }} />
-            <div style={{ textAlign:"left" }}>
-              <div style={{ fontSize:14, fontWeight:600, color:TEXT, marginBottom:4 }}>What you get:</div>
-              <div style={{ fontSize:13, color:MUTED, lineHeight:1.7 }}>
-                ✓ 50% off your first month<br />
-                ✓ Early access before public launch<br />
-                ✓ Direct line to the founder
-              </div>
-            </div>
+          <div style={{ display:"inline-flex", alignItems:"center", gap:8, background:"rgba(22,163,74,0.08)", border:"1px solid rgba(22,163,74,0.2)", borderRadius:20, padding:"6px 16px", fontSize:13, color:ACCENT, fontWeight:600 }}>
+            🎉 Founding member offer — 50% off first month, automatically applied at checkout
           </div>
-
-          {/* Waitlist form */}
-          {!submitted ? (
-            <div style={{ maxWidth:480, margin:"0 auto" }}>
-              <div className="cta-email-row" style={{ marginBottom:12 }}>
-                <input
-                  id="cta-email"
-                  type="email"
-                  value={email}
-                  onChange={e=>setEmail(e.target.value)}
-                  onKeyDown={e=>e.key==="Enter"&&joinWaitlist()}
-                  placeholder="your@email.com"
-                  style={{ flex:1, padding:"14px 20px", background:"#fff", border:"none", color:TEXT, fontSize:15, outline:"none", fontFamily:"inherit" }}
-                />
-                <button className="cta-primary" style={{ borderRadius:0, whiteSpace:"nowrap" }} onClick={joinWaitlist} disabled={submitting}>
-                  {submitting ? "Saving…" : "Claim my spot →"}
-                </button>
-              </div>
-              <div style={{ fontSize:12, color:MUTED2 }}>No credit card required. We'll email you when we launch.</div>
-            </div>
-          ) : (
-            <div style={{ display:"inline-flex", flexDirection:"column", alignItems:"center", gap:8, background:"rgba(22,163,74,0.06)", border:"1px solid rgba(22,163,74,0.2)", borderRadius:12, padding:"20px 36px", color:ACCENT }}>
-              <div style={{ fontSize:20 }}>🎉</div>
-              <div style={{ fontSize:16, fontWeight:600, color:TEXT }}>You're on the list!</div>
-              <div style={{ fontSize:13, color:MUTED }}>We'll email you the moment QualyLeads launches.</div>
-            </div>
-          )}
         </div>
 
-        {/* Pricing preview */}
-        <div style={{ marginTop:60, borderTop:`1px solid ${BORDER}`, paddingTop:48 }}>
-          <div style={{ textAlign:"center", marginBottom:32 }}>
-            <div style={{ fontSize:13, color:MUTED }}>Pricing after launch — waitlist members pay half on their first month</div>
+        <div className="pricing-grid">
+
+          {/* STARTER */}
+          <div style={{ background:SURFACE, border:`1px solid ${BORDER}`, borderRadius:16, padding:28 }}>
+            <div style={{ fontSize:12, fontWeight:600, color:MUTED, textTransform:"uppercase", letterSpacing:"0.06em", marginBottom:10 }}>Starter</div>
+            <div style={{ display:"flex", alignItems:"baseline", gap:10, marginBottom:6 }}>
+              <div style={{ fontSize:38, fontWeight:700, color:TEXT, letterSpacing:"-0.03em", lineHeight:1 }}>€49<span style={{ fontSize:15, fontWeight:400, color:MUTED }}>/mo</span></div>
+              <div style={{ fontSize:13, background:"rgba(22,163,74,0.1)", color:ACCENT, padding:"2px 10px", borderRadius:20, fontWeight:600 }}>→ €24.50 first month</div>
+            </div>
+            <div style={{ fontSize:12, color:MUTED, fontStyle:"italic", marginBottom:20 }}>Gyms · Plumbers · New coaches</div>
+            {["Up to 100 leads / month","1 industry blueprint","AI SMS replies","Calendly auto-booking","Lead dashboard","Email support"].map(f=>(
+              <div key={f} style={{ display:"flex", alignItems:"center", gap:8, marginBottom:7, fontSize:13, color:TEXT }}>
+                <span style={{ width:16, height:16, borderRadius:"50%", background:"rgba(22,163,74,0.1)", color:ACCENT, display:"flex", alignItems:"center", justifyContent:"center", fontSize:9, flexShrink:0 }}>✓</span>{f}
+              </div>
+            ))}
+            {[["💬 WhatsApp","Coming soon"],["Follow-up sequences",""],["White-label",""]].map(([f,tag])=>(
+              <div key={f} style={{ display:"flex", alignItems:"center", gap:8, marginBottom:7, fontSize:13, color:MUTED2 }}>
+                <span style={{ width:16, height:16, borderRadius:"50%", background:SURFACE2, display:"flex", alignItems:"center", justifyContent:"center", fontSize:9, flexShrink:0 }}>–</span>
+                {f}{tag && <span style={{ fontSize:10, background:"#f0fdf4", color:"#16a34a", padding:"1px 6px", borderRadius:10, fontWeight:600 }}>{tag}</span>}
+              </div>
+            ))}
+            <button className="cta-primary" style={{ width:"100%", marginTop:20, padding:"12px" }} onClick={()=>startCheckout("starter")}>
+              {checkoutLoading==="starter" ? "Loading…" : "Start free trial →"}
+            </button>
           </div>
-          <div className="pricing-grid">
 
-            {/* STARTER */}
-            <div style={{ background:SURFACE, border:`1px solid ${BORDER}`, borderRadius:16, padding:28 }}>
-              <div style={{ fontSize:12, fontWeight:600, color:MUTED, textTransform:"uppercase", letterSpacing:"0.06em", marginBottom:10 }}>Starter</div>
-              <div style={{ display:"flex", alignItems:"baseline", gap:10, marginBottom:6 }}>
-                <div style={{ fontSize:38, fontWeight:700, color:TEXT, letterSpacing:"-0.03em", lineHeight:1 }}>€49<span style={{ fontSize:15, fontWeight:400, color:MUTED }}>/mo</span></div>
-                <div style={{ fontSize:13, background:"rgba(22,163,74,0.1)", color:ACCENT, padding:"2px 10px", borderRadius:20, fontWeight:600 }}>→ €24.50 first month</div>
-              </div>
-              <div style={{ fontSize:12, color:MUTED, fontStyle:"italic", marginBottom:16 }}>Gyms · Plumbers · New coaches</div>
-              {["Up to 100 leads / month","1 industry blueprint","AI SMS replies","Calendly auto-booking","Lead dashboard","Email support"].map(f=>(
-                <div key={f} style={{ display:"flex", alignItems:"center", gap:8, marginBottom:7, fontSize:13, color:TEXT }}>
-                  <span style={{ width:16, height:16, borderRadius:"50%", background:"rgba(22,163,74,0.1)", color:ACCENT, display:"flex", alignItems:"center", justifyContent:"center", fontSize:9, flexShrink:0 }}>✓</span>{f}
-                </div>
-              ))}
-              {["WhatsApp","Follow-up sequences","White-label"].map(f=>(
-                <div key={f} style={{ display:"flex", alignItems:"center", gap:8, marginBottom:7, fontSize:13, color:MUTED2 }}>
-                  <span style={{ width:16, height:16, borderRadius:"50%", background:SURFACE2, display:"flex", alignItems:"center", justifyContent:"center", fontSize:9, flexShrink:0 }}>–</span>{f}
-                </div>
-              ))}
+          {/* GROWTH */}
+          <div style={{ background:"#fff", border:`2px solid ${ACCENT}`, borderRadius:16, padding:28, position:"relative", boxShadow:"0 8px 32px rgba(22,163,74,0.1)" }}>
+            <div style={{ position:"absolute", top:-13, left:"50%", transform:"translateX(-50%)", background:ACCENT, color:"#fff", fontSize:11, fontWeight:600, padding:"3px 14px", borderRadius:20, whiteSpace:"nowrap" }}>MOST POPULAR</div>
+            <div style={{ fontSize:12, fontWeight:600, color:ACCENT, textTransform:"uppercase", letterSpacing:"0.06em", marginBottom:10 }}>Growth</div>
+            <div style={{ display:"flex", alignItems:"baseline", gap:10, marginBottom:6 }}>
+              <div style={{ fontSize:38, fontWeight:700, color:TEXT, letterSpacing:"-0.03em", lineHeight:1 }}>€99<span style={{ fontSize:15, fontWeight:400, color:MUTED }}>/mo</span></div>
+              <div style={{ fontSize:13, background:"rgba(22,163,74,0.1)", color:ACCENT, padding:"2px 10px", borderRadius:20, fontWeight:600 }}>→ €49.50 first month</div>
             </div>
-
-            {/* GROWTH */}
-            <div style={{ background:"#fff", border:`2px solid ${ACCENT}`, borderRadius:16, padding:28, position:"relative", boxShadow:"0 8px 32px rgba(22,163,74,0.1)" }}>
-              <div style={{ position:"absolute", top:-13, left:"50%", transform:"translateX(-50%)", background:ACCENT, color:"#fff", fontSize:11, fontWeight:600, padding:"3px 14px", borderRadius:20, whiteSpace:"nowrap" }}>MOST POPULAR</div>
-              <div style={{ fontSize:12, fontWeight:600, color:ACCENT, textTransform:"uppercase", letterSpacing:"0.06em", marginBottom:10 }}>Growth</div>
-              <div style={{ display:"flex", alignItems:"baseline", gap:10, marginBottom:6 }}>
-                <div style={{ fontSize:38, fontWeight:700, color:TEXT, letterSpacing:"-0.03em", lineHeight:1 }}>€99<span style={{ fontSize:15, fontWeight:400, color:MUTED }}>/mo</span></div>
-                <div style={{ fontSize:13, background:"rgba(22,163,74,0.1)", color:ACCENT, padding:"2px 10px", borderRadius:20, fontWeight:600 }}>→ €49.50 first month</div>
+            <div style={{ fontSize:12, color:MUTED, fontStyle:"italic", marginBottom:20 }}>Agencies · Coaches · Growing gyms</div>
+            {["Up to 500 leads / month","All industry blueprints","AI SMS replies","Calendly auto-booking","Follow-up sequences","Full dashboard + analytics","Priority support"].map(f=>(
+              <div key={f} style={{ display:"flex", alignItems:"center", gap:8, marginBottom:7, fontSize:13, color:TEXT }}>
+                <span style={{ width:16, height:16, borderRadius:"50%", background:"rgba(22,163,74,0.1)", color:ACCENT, display:"flex", alignItems:"center", justifyContent:"center", fontSize:9, flexShrink:0 }}>✓</span>{f}
               </div>
-              <div style={{ fontSize:12, color:MUTED, fontStyle:"italic", marginBottom:16 }}>Agencies · Coaches · Growing gyms</div>
-              {["Up to 500 leads / month","All industry blueprints","AI SMS + WhatsApp","Calendly auto-booking","Follow-up sequences","Full dashboard + analytics","Priority support"].map(f=>(
-                <div key={f} style={{ display:"flex", alignItems:"center", gap:8, marginBottom:7, fontSize:13, color:TEXT }}>
-                  <span style={{ width:16, height:16, borderRadius:"50%", background:"rgba(22,163,74,0.1)", color:ACCENT, display:"flex", alignItems:"center", justifyContent:"center", fontSize:9, flexShrink:0 }}>✓</span>{f}
-                </div>
-              ))}
-              {["White-label"].map(f=>(
-                <div key={f} style={{ display:"flex", alignItems:"center", gap:8, marginBottom:7, fontSize:13, color:MUTED2 }}>
-                  <span style={{ width:16, height:16, borderRadius:"50%", background:SURFACE2, display:"flex", alignItems:"center", justifyContent:"center", fontSize:9, flexShrink:0 }}>–</span>{f}
-                </div>
-              ))}
-            </div>
-
-            {/* PRO */}
-            <div style={{ background:SURFACE, border:`1px solid ${BORDER}`, borderRadius:16, padding:28 }}>
-              <div style={{ fontSize:12, fontWeight:600, color:MUTED, textTransform:"uppercase", letterSpacing:"0.06em", marginBottom:10 }}>Pro</div>
-              <div style={{ display:"flex", alignItems:"baseline", gap:10, marginBottom:6 }}>
-                <div style={{ fontSize:38, fontWeight:700, color:TEXT, letterSpacing:"-0.03em", lineHeight:1 }}>€249<span style={{ fontSize:15, fontWeight:400, color:MUTED }}>/mo</span></div>
-                <div style={{ fontSize:13, background:"rgba(22,163,74,0.1)", color:ACCENT, padding:"2px 10px", borderRadius:20, fontWeight:600 }}>→ €124.50 first month</div>
+            ))}
+            {[["💬 WhatsApp","Coming soon"],["White-label",""]].map(([f,tag])=>(
+              <div key={f} style={{ display:"flex", alignItems:"center", gap:8, marginBottom:7, fontSize:13, color:MUTED2 }}>
+                <span style={{ width:16, height:16, borderRadius:"50%", background:SURFACE2, display:"flex", alignItems:"center", justifyContent:"center", fontSize:9, flexShrink:0 }}>–</span>
+                {f}{tag && <span style={{ fontSize:10, background:"#f0fdf4", color:"#16a34a", padding:"1px 6px", borderRadius:10, fontWeight:600 }}>{tag}</span>}
               </div>
-              <div style={{ fontSize:12, color:MUTED, fontStyle:"italic", marginBottom:16 }}>Influencers · High-ticket coaches · Resellers</div>
-              {["Unlimited leads","All blueprints + custom","AI SMS + WhatsApp","Calendly auto-booking","Advanced follow-up flows","White-label (your brand)","Custom AI training on your data","Dedicated onboarding call"].map(f=>(
-                <div key={f} style={{ display:"flex", alignItems:"center", gap:8, marginBottom:7, fontSize:13, color:TEXT }}>
-                  <span style={{ width:16, height:16, borderRadius:"50%", background:"rgba(22,163,74,0.1)", color:ACCENT, display:"flex", alignItems:"center", justifyContent:"center", fontSize:9, flexShrink:0 }}>✓</span>{f}
-                </div>
-              ))}
-            </div>
-
+            ))}
+            <button className="cta-primary" style={{ width:"100%", marginTop:20, padding:"12px" }} onClick={()=>startCheckout("growth")}>
+              {checkoutLoading==="growth" ? "Loading…" : "Start free trial →"}
+            </button>
           </div>
+
+          {/* PRO */}
+          <div style={{ background:SURFACE, border:`1px solid ${BORDER}`, borderRadius:16, padding:28 }}>
+            <div style={{ fontSize:12, fontWeight:600, color:MUTED, textTransform:"uppercase", letterSpacing:"0.06em", marginBottom:10 }}>Pro</div>
+            <div style={{ display:"flex", alignItems:"baseline", gap:10, marginBottom:6 }}>
+              <div style={{ fontSize:38, fontWeight:700, color:TEXT, letterSpacing:"-0.03em", lineHeight:1 }}>€249<span style={{ fontSize:15, fontWeight:400, color:MUTED }}>/mo</span></div>
+              <div style={{ fontSize:13, background:"rgba(22,163,74,0.1)", color:ACCENT, padding:"2px 10px", borderRadius:20, fontWeight:600 }}>→ €124.50 first month</div>
+            </div>
+            <div style={{ fontSize:12, color:MUTED, fontStyle:"italic", marginBottom:20 }}>Influencers · High-ticket coaches · Resellers</div>
+            {["Unlimited leads","All blueprints + custom","AI SMS replies","Calendly auto-booking","Advanced follow-up flows","White-label (your brand)","Custom AI training on your data","Dedicated onboarding call"].map(f=>(
+              <div key={f} style={{ display:"flex", alignItems:"center", gap:8, marginBottom:7, fontSize:13, color:TEXT }}>
+                <span style={{ width:16, height:16, borderRadius:"50%", background:"rgba(22,163,74,0.1)", color:ACCENT, display:"flex", alignItems:"center", justifyContent:"center", fontSize:9, flexShrink:0 }}>✓</span>{f}
+              </div>
+            ))}
+            {[["💬 WhatsApp","Coming soon"]].map(([f,tag])=>(
+              <div key={f} style={{ display:"flex", alignItems:"center", gap:8, marginBottom:7, fontSize:13, color:MUTED2 }}>
+                <span style={{ width:16, height:16, borderRadius:"50%", background:SURFACE2, display:"flex", alignItems:"center", justifyContent:"center", fontSize:9, flexShrink:0 }}>–</span>
+                {f}{tag && <span style={{ fontSize:10, background:"#f0fdf4", color:"#16a34a", padding:"1px 6px", borderRadius:10, fontWeight:600 }}>{tag}</span>}
+              </div>
+            ))}
+            <button className="cta-primary" style={{ width:"100%", marginTop:20, padding:"12px" }} onClick={()=>startCheckout("pro")}>
+              {checkoutLoading==="pro" ? "Loading…" : "Start free trial →"}
+            </button>
+          </div>
+
         </div>
       </section>
 
       {/* CTA */}
       <section id="demo" className="section-pad" style={{ textAlign:"center", background:SURFACE, borderTop:`1px solid ${BORDER}` }}>
-        <div style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:ACCENT, letterSpacing:"0.1em", textTransform:"uppercase", marginBottom:20 }}>Don't miss out</div>
+        <div style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:ACCENT, letterSpacing:"0.1em", textTransform:"uppercase", marginBottom:20 }}>Get started today</div>
         <h2 style={{ fontFamily:"'DM Serif Display',serif", fontSize:"clamp(32px,5vw,60px)", lineHeight:1.05, letterSpacing:"-0.03em", maxWidth:640, margin:"0 auto 16px", color:TEXT }}>
           Your next lead won't<br /><span style={{ fontStyle:"italic", color:ACCENT }}>wait for you.</span>
         </h2>
-        <p style={{ fontSize:16, color:MUTED, maxWidth:400, margin:"0 auto 36px" }}>Join 50 founding members and get 50% off your first month. Launch is coming soon.</p>
-        {!submitted ? (
-          <div className="cta-email-row">
-            <input id="cta-email" type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="your@email.com"
-              style={{ flex:1, padding:"14px 20px", background:"#fff", border:"none", color:TEXT, fontSize:15, outline:"none", fontFamily:"inherit" }} />
-            <button className="cta-primary" style={{ borderRadius:0, whiteSpace:"nowrap" }} onClick={joinWaitlist} disabled={submitting}>{submitting ? "Saving…" : "Claim my spot →"}</button>
-          </div>
-        ) : (
-          <div style={{ display:"inline-flex", alignItems:"center", gap:10, background:"rgba(22,163,74,0.08)", border:"1px solid rgba(22,163,74,0.25)", borderRadius:10, padding:"14px 28px", color:ACCENT, fontSize:15 }}>
-            🎉 You're on the list — we'll be in touch!
-          </div>
-        )}
+        <p style={{ fontSize:16, color:MUTED, maxWidth:400, margin:"0 auto 36px" }}>Start converting leads in minutes. 50% off your first month — no code required.</p>
+        <button className="cta-primary" style={{ padding:"16px 40px", fontSize:16 }} onClick={()=>startCheckout("growth")}>
+          {checkoutLoading==="growth" ? "Loading…" : "Start free trial →"}
+        </button>
         <p style={{ fontSize:12, color:MUTED2, marginTop:14 }}>Gyms · Plumbers · Agencies · Coaches · Influencers · Any business with inbound leads</p>
       </section>
 
