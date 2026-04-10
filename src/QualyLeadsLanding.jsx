@@ -80,6 +80,15 @@ function PhoneDemo() {
         <div style={{ background:SURFACE, padding:"10px 20px 12px", borderBottom:`1px solid ${BORDER}`, display:"flex", alignItems:"center", gap:10 }}>
           <div style={{ width:36, height:36, borderRadius:"50%", background:ACCENT, display:"flex", alignItems:"center", justifyContent:"center", fontSize:14, fontWeight:700, color:"#fff", flexShrink:0 }}>Q</div>
           <div>
+            <div style={{ display:"flex", justifyContent:"center", marginTop:20 }}>
+  <div style={{ display:"inline-flex", background:SURFACE, border:`1px solid ${BORDER}`, borderRadius:24, padding:4 }}>
+    {["USD","EUR"].map(c=>(
+      <button key={c} onClick={()=>setCurrency(c)} style={{ padding:"6px 22px", borderRadius:20, border:"none", background:currency===c?ACCENT:"transparent", color:currency===c?"#fff":MUTED, fontSize:13, fontWeight:currency===c?600:400, cursor:"pointer", fontFamily:"inherit", transition:"all 0.2s" }}>
+        {c==="USD"?"🇺🇸 USD":"🇪🇺 EUR"}
+      </button>
+    ))}
+  </div>
+</div>
             <div style={{ fontSize:13, fontWeight:600, color:TEXT }}>Qualy · PeakFit</div>
             <div style={{ fontSize:11, color:ACCENT, display:"flex", alignItems:"center", gap:4 }}>
               <span style={{ width:6, height:6, borderRadius:"50%", background:ACCENT, display:"inline-block" }} /> Active now
@@ -181,6 +190,12 @@ export default function QualyLeadsLanding() {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [menuOpen, setMenuOpen]   = useState(false);
+  const [currency, setCurrency] = useState("USD");
+const prices = {
+  USD: { starter:"$49", starterFirst:"$24.50", growth:"$99", growthFirst:"$49.50", pro:"$249", proFirst:"$124.50" },
+  EUR: { starter:"€49", starterFirst:"€24.50", growth:"€99", growthFirst:"€49.50", pro:"€249", proFirst:"€124.50" },
+};
+const p = prices[currency];
   const [checkoutLoading, setCheckoutLoading] = useState(null);
 
   async function startCheckout(plan) {
