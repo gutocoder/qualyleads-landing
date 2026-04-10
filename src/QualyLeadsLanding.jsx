@@ -475,8 +475,8 @@ export default function QualyLeadsLanding() {
           <div style={{ background:SURFACE, border:`1px solid ${BORDER}`, borderRadius:16, padding:28 }}>
             <div style={{ fontSize:12, fontWeight:600, color:MUTED, textTransform:"uppercase", letterSpacing:"0.06em", marginBottom:10 }}>Starter</div>
             <div style={{ display:"flex", alignItems:"baseline", gap:10, marginBottom:6 }}>
-              <div style={{ fontSize:38, fontWeight:700, color:TEXT, letterSpacing:"-0.03em", lineHeight:1 }}>€49<span style={{ fontSize:15, fontWeight:400, color:MUTED }}>/mo</span></div>
-              <div style={{ fontSize:13, background:"rgba(22,163,74,0.1)", color:ACCENT, padding:"2px 10px", borderRadius:20, fontWeight:600 }}>→ €24.50 first month</div>
+              <div style={{ fontSize:38, fontWeight:700, color:TEXT, letterSpacing:"-0.03em", lineHeight:1 }}>$49<span style={{ fontSize:15, fontWeight:400, color:MUTED }}>/mo</span></div>
+              <div style={{ fontSize:13, background:"rgba(22,163,74,0.1)", color:ACCENT, padding:"2px 10px", borderRadius:20, fontWeight:600 }}>→ $24.50 first month</div>
             </div>
             <div style={{ fontSize:12, color:MUTED, fontStyle:"italic", marginBottom:20 }}>Gyms · Plumbers · New coaches</div>
             {["Up to 100 leads / month","1 industry blueprint","AI SMS replies","Calendly auto-booking","Lead dashboard","Email support"].map(f=>(
@@ -500,8 +500,8 @@ export default function QualyLeadsLanding() {
             <div style={{ position:"absolute", top:-13, left:"50%", transform:"translateX(-50%)", background:ACCENT, color:"#fff", fontSize:11, fontWeight:600, padding:"3px 14px", borderRadius:20, whiteSpace:"nowrap" }}>MOST POPULAR</div>
             <div style={{ fontSize:12, fontWeight:600, color:ACCENT, textTransform:"uppercase", letterSpacing:"0.06em", marginBottom:10 }}>Growth</div>
             <div style={{ display:"flex", alignItems:"baseline", gap:10, marginBottom:6 }}>
-              <div style={{ fontSize:38, fontWeight:700, color:TEXT, letterSpacing:"-0.03em", lineHeight:1 }}>€99<span style={{ fontSize:15, fontWeight:400, color:MUTED }}>/mo</span></div>
-              <div style={{ fontSize:13, background:"rgba(22,163,74,0.1)", color:ACCENT, padding:"2px 10px", borderRadius:20, fontWeight:600 }}>→ €49.50 first month</div>
+              <div style={{ fontSize:38, fontWeight:700, color:TEXT, letterSpacing:"-0.03em", lineHeight:1 }}>$99<span style={{ fontSize:15, fontWeight:400, color:MUTED }}>/mo</span></div>
+              <div style={{ fontSize:13, background:"rgba(22,163,74,0.1)", color:ACCENT, padding:"2px 10px", borderRadius:20, fontWeight:600 }}>→ $49.50 first month</div>
             </div>
             <div style={{ fontSize:12, color:MUTED, fontStyle:"italic", marginBottom:20 }}>Agencies · Coaches · Growing gyms</div>
             {["Up to 500 leads / month","All industry blueprints","AI SMS replies","Calendly auto-booking","Follow-up sequences","Full dashboard + analytics","Priority support"].map(f=>(
@@ -524,8 +524,8 @@ export default function QualyLeadsLanding() {
           <div style={{ background:SURFACE, border:`1px solid ${BORDER}`, borderRadius:16, padding:28 }}>
             <div style={{ fontSize:12, fontWeight:600, color:MUTED, textTransform:"uppercase", letterSpacing:"0.06em", marginBottom:10 }}>Pro</div>
             <div style={{ display:"flex", alignItems:"baseline", gap:10, marginBottom:6 }}>
-              <div style={{ fontSize:38, fontWeight:700, color:TEXT, letterSpacing:"-0.03em", lineHeight:1 }}>€249<span style={{ fontSize:15, fontWeight:400, color:MUTED }}>/mo</span></div>
-              <div style={{ fontSize:13, background:"rgba(22,163,74,0.1)", color:ACCENT, padding:"2px 10px", borderRadius:20, fontWeight:600 }}>→ €124.50 first month</div>
+              <div style={{ fontSize:38, fontWeight:700, color:TEXT, letterSpacing:"-0.03em", lineHeight:1 }}>$249<span style={{ fontSize:15, fontWeight:400, color:MUTED }}>/mo</span></div>
+              <div style={{ fontSize:13, background:"rgba(22,163,74,0.1)", color:ACCENT, padding:"2px 10px", borderRadius:20, fontWeight:600 }}>→ $124.50 first month</div>
             </div>
             <div style={{ fontSize:12, color:MUTED, fontStyle:"italic", marginBottom:20 }}>Influencers · High-ticket coaches · Resellers</div>
             {["Unlimited leads","All blueprints + custom","AI SMS replies","Calendly auto-booking","Advanced follow-up flows","White-label (your brand)","Custom AI training on your data","Dedicated onboarding call"].map(f=>(
