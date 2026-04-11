@@ -134,7 +134,7 @@ export default function QualyLeadsLanding() {
     try {
       const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/stripe/create-checkout`, {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ plan }),
+        body: JSON.stringify({ plan, currency }),
       });
       const data = await res.json();
       if (data.url) window.location.href = data.url;
