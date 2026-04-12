@@ -1,9 +1,12 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import QualyLeadsLanding from "./QualyLeadsLanding.jsx";
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import QualyLeadsLanding from './QualyLeadsLanding.jsx'
+import Privacy from './Privacy.jsx'
 
-ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <QualyLeadsLanding />
-  </React.StrictMode>
-);
+const path = window.location.pathname;
+
+createRoot(document.getElementById('root')).render(
+  <StrictMode>
+    {path === '/privacy' ? <Privacy /> : <QualyLeadsLanding />}
+  </StrictMode>,
+)
