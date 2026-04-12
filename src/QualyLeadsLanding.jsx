@@ -45,16 +45,27 @@ const T = {
       { icon:"📊", title:"Live dashboard", body:"See every lead, every message, every status in real time. No spreadsheets." },
       { icon:"🔌", title:"Plug-in ready", body:"Connect your CRM, Zapier, or form tool in minutes. No code required." },
     ],
+    faqBadge: "FAQ",
+    faqH2: "Good questions. Honest answers.",
+    faqs: [
+      { q:"Why SMS and not WhatsApp?", a:"SMS has a 98% open rate and works on every phone without an app. WhatsApp is coming — join the waitlist. Most leads still respond to SMS within 90 seconds." },
+      { q:"What if the AI says something wrong?", a:"Qualy never makes promises or quotes prices. It only asks questions and books appointments. Every message is visible in your dashboard so you always know exactly what was said." },
+      { q:"Do I need Zapier?", a:"No — connecting Google Forms is completely free via our Apps Script integration. Zapier is optional if you use other tools." },
+      { q:"What if I get more than 100 leads on Starter?", a:"We never cut off a live conversation. If you're approaching the limit we'll let you know and you can upgrade. Any active conversation is always completed." },
+      { q:"Is this GDPR compliant?", a:"Yes. All data is stored in the EU. You can export or delete your data at any time. See our privacy policy for full details." },
+      { q:"What if I want to cancel?", a:"No contracts, no hassle. Cancel anytime from your dashboard with one click. Your data stays available until the end of your billing period." },
+    ],
     testimonial: "\"We went from booking 3 tours a week to 9. I didn't change anything — just added Qualy to our enquiry form.\"",
     testimonialName: "Mike Hartley",
     testimonialRole: "Owner, PeakFit Gym · Amsterdam",
     waBadge: "COMING SOON",
-    waTitle: "WhatsApp integration coming soon",
-    waSub: "— Qualy will qualify leads on WhatsApp too. Same speed, same AI, more reach.",
+    waTitle: "WhatsApp integration coming soon — join the waitlist!",
+    waSub: "Qualy will qualify leads on WhatsApp too. Same speed, same AI, more reach.",
     pricingBadge: "Simple pricing",
     pricingH2a: "Start converting leads",
     pricingH2b: "today.",
     pricingSub: "No setup fees. Cancel anytime. First 50 clients get 50% off their first month.",
+    pricingNote: "✅ Google Forms connection is free — Zapier is optional · ✅ We never cut off a conversation mid-lead",
     pricingBanner: "🎉 Founding member offer — 50% off first month, automatically applied at checkout",
     starterName: "Starter", starterWho: "Gyms · Plumbers · New coaches",
     growthName: "Growth", growthWho: "Agencies · Coaches · Growing gyms",
@@ -111,16 +122,27 @@ const T = {
       { icon:"📊", title:"Live dashboard", body:"Bekijk elke lead, elk bericht, elke status in realtime. Geen spreadsheets meer." },
       { icon:"🔌", title:"Direct te koppelen", body:"Verbind je CRM, Zapier of formuliertool in minuten. Geen code vereist." },
     ],
+    faqBadge: "Veelgestelde vragen",
+    faqH2: "Goede vragen. Eerlijke antwoorden.",
+    faqs: [
+      { q:"Waarom SMS en niet WhatsApp?", a:"SMS heeft een openingsratio van 98% en werkt op elke telefoon zonder app. WhatsApp komt eraan — schrijf je in voor de wachtlijst. De meeste leads reageren al binnen 90 seconden op SMS." },
+      { q:"Wat als de AI iets verkeerds zegt?", a:"Qualy maakt geen beloftes en geeft geen prijzen. Het stelt alleen vragen en boekt afspraken. Elk bericht is zichtbaar in je dashboard — je hebt altijd volledig inzicht." },
+      { q:"Kost het Zapier extra?", a:"Nee — Google Forms koppelen is volledig gratis via onze Apps Script integratie. Zapier is optioneel als je andere tools gebruikt." },
+      { q:"Wat als ik meer dan 100 leads krijg op Starter?", a:"We onderbreken nooit een lopend gesprek. Als je de limiet nadert, laten we je het weten en kun je upgraden. Een lopend gesprek wordt altijd afgerond." },
+      { q:"Is dit GDPR-proof?", a:"Ja. Klantdata wordt opgeslagen in de EU. Je kunt data op elk moment exporteren of verwijderen. Bekijk onze privacyverklaring voor meer details." },
+      { q:"Wat als ik wil opzeggen?", a:"Geen contract, geen gedoe. Opzeggen kan met één klik vanuit je dashboard. Je data blijft beschikbaar tot het einde van je betaalperiode." },
+    ],
     testimonial: "\"We gingen van 3 rondleidingen per week naar 9. Ik heb niets veranderd — alleen Qualy toegevoegd aan ons contactformulier.\"",
     testimonialName: "Mike Hartley",
     testimonialRole: "Eigenaar, PeakFit Gym · Amsterdam",
     waBadge: "BINNENKORT",
-    waTitle: "WhatsApp-integratie komt eraan",
-    waSub: "— Qualy kwalificeert leads binnenkort ook via WhatsApp. Zelfde snelheid, zelfde AI, meer bereik.",
+    waTitle: "WhatsApp-integratie komt eraan — schrijf je in voor de wachtlijst!",
+    waSub: "Qualy kwalificeert leads binnenkort ook via WhatsApp. Zelfde snelheid, zelfde AI, meer bereik.",
     pricingBadge: "Eenvoudige prijzen",
     pricingH2a: "Begin vandaag nog",
     pricingH2b: "met leads converteren.",
     pricingSub: "Geen installatiekosten. Op elk moment opzeggen. Eerste 50 klanten krijgen 50% korting op de eerste maand.",
+    pricingNote: "✅ Google Forms koppeling is gratis — Zapier is optioneel · ✅ We onderbreken nooit een lopend gesprek",
     pricingBanner: "🎉 Founding member aanbieding — 50% korting op de eerste maand, automatisch verrekend bij afrekenen",
     starterName: "Starter", starterWho: "Sportscholen · Loodgieters · Nieuwe coaches",
     growthName: "Groei", growthWho: "Bureaus · Coaches · Groeiende sportscholen",
@@ -249,27 +271,24 @@ export default function QualyLeadsLanding() {
   const [lang, setLang] = useState("en");
   const [checkoutLoading, setCheckoutLoading] = useState(null);
   const t = T[lang];
-
   const prices = {
     USD: { starter:"$49", starterFirst:"$24.50", growth:"$99", growthFirst:"$49.50", pro:"$249", proFirst:"$124.50" },
     EUR: { starter:"€49", starterFirst:"€24.50", growth:"€99", growthFirst:"€49.50", pro:"€249", proFirst:"€124.50" },
   };
   const p = prices[currency];
-
   async function startCheckout(plan) {
     setCheckoutLoading(plan);
     try {
       const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/stripe/create-checkout`, {
-        method: "POST", headers: { "Content-Type": "application/json" },
+        method:"POST", headers:{"Content-Type":"application/json"},
         body: JSON.stringify({ plan, currency }),
       });
       const data = await res.json();
       if (data.url) window.location.href = data.url;
-    } catch (err) { console.error("Checkout error:", err); }
+    } catch(err) { console.error("Checkout error:", err); }
     finally { setCheckoutLoading(null); }
   }
   const scrollTo = (id) => { document.getElementById(id)?.scrollIntoView({behavior:"smooth"}); setMenuOpen(false); };
-
   return (
     <div style={{ background:BG, color:TEXT, minHeight:"100vh", fontFamily:"'DM Sans',system-ui,sans-serif", overflowX:"hidden" }}>
       <style>{`
@@ -303,8 +322,7 @@ export default function QualyLeadsLanding() {
         .toggle-btn{transition:all 0.2s;}
         @media(max-width:768px){
           .hero-grid{grid-template-columns:1fr;gap:48px;text-align:center;}
-          .hero-grid .fade-up-2{order:1;}
-          .hero-grid>div:first-child{order:2;}
+          .hero-grid .fade-up-2{order:1;}.hero-grid>div:first-child{order:2;}
           .features-grid{grid-template-columns:1fr;}
           .pricing-grid{grid-template-columns:1fr;}
           .stats-row{justify-content:center;gap:24px;}
@@ -316,13 +334,10 @@ export default function QualyLeadsLanding() {
           .mobile-menu-item{padding:14px 24px;font-size:15px;color:${TEXT};cursor:pointer;border-bottom:1px solid ${BORDER};}
           .mobile-menu-item:last-child{border-bottom:none;}
           .footer-inner{flex-direction:column;gap:16px;text-align:center;}
-          .section-pad{padding:60px 20px;}
-          .section-pad-sm{padding:60px 20px;}
-          .hero-pad{padding:40px 20px;}
+          .section-pad{padding:60px 20px;}.section-pad-sm{padding:60px 20px;}.hero-pad{padding:40px 20px;}
         }
       `}</style>
 
-      {/* NAV */}
       <nav style={{ position:"sticky", top:0, zIndex:100, background:"rgba(255,255,255,0.95)", backdropFilter:"blur(12px)", borderBottom:`1px solid ${BORDER}` }}>
         <div style={{ padding:"0 24px", height:104, display:"flex", alignItems:"center", justifyContent:"space-between", maxWidth:1200, margin:"0 auto" }}>
           <img src={logoSrc} alt="QualyLeads" style={{ height:90, width:"auto" }} />
@@ -330,7 +345,6 @@ export default function QualyLeadsLanding() {
             <span className="nav-link" onClick={()=>scrollTo("features")}>{t.nav.features}</span>
             <span className="nav-link" onClick={()=>scrollTo("pricing")}>{t.nav.pricing}</span>
             <span className="nav-link" onClick={()=>scrollTo("phone-demo")}>{t.nav.demo}</span>
-            {/* Language toggle */}
             <div style={{ display:"inline-flex", background:SURFACE, border:`1px solid ${BORDER}`, borderRadius:20, padding:3 }}>
               {["en","nl"].map(l=>(
                 <button key={l} onClick={()=>setLang(l)} className="toggle-btn" style={{ padding:"4px 12px", borderRadius:16, border:"none", background:lang===l?ACCENT:"transparent", color:lang===l?"#fff":MUTED, fontSize:12, fontWeight:lang===l?600:400, cursor:"pointer", fontFamily:"inherit" }}>
@@ -342,7 +356,7 @@ export default function QualyLeadsLanding() {
           </div>
           <button className="nav-mobile-btn" onClick={()=>setMenuOpen(!menuOpen)}>
             <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-              {menuOpen ? <><line x1="4" y1="4" x2="18" y2="18" stroke={TEXT} strokeWidth="2" strokeLinecap="round"/><line x1="18" y1="4" x2="4" y2="18" stroke={TEXT} strokeWidth="2" strokeLinecap="round"/></> : <><line x1="3" y1="6" x2="19" y2="6" stroke={TEXT} strokeWidth="2" strokeLinecap="round"/><line x1="3" y1="11" x2="19" y2="11" stroke={TEXT} strokeWidth="2" strokeLinecap="round"/><line x1="3" y1="16" x2="19" y2="16" stroke={TEXT} strokeWidth="2" strokeLinecap="round"/></>}
+              {menuOpen?<><line x1="4" y1="4" x2="18" y2="18" stroke={TEXT} strokeWidth="2" strokeLinecap="round"/><line x1="18" y1="4" x2="4" y2="18" stroke={TEXT} strokeWidth="2" strokeLinecap="round"/></>:<><line x1="3" y1="6" x2="19" y2="6" stroke={TEXT} strokeWidth="2" strokeLinecap="round"/><line x1="3" y1="11" x2="19" y2="11" stroke={TEXT} strokeWidth="2" strokeLinecap="round"/><line x1="3" y1="16" x2="19" y2="16" stroke={TEXT} strokeWidth="2" strokeLinecap="round"/></>}
             </svg>
           </button>
         </div>
@@ -363,7 +377,6 @@ export default function QualyLeadsLanding() {
         </div>
       </nav>
 
-      {/* HERO */}
       <section style={{ maxWidth:1200, margin:"0 auto" }} className="hero-pad">
         <div className="hero-grid">
           <div>
@@ -388,13 +401,10 @@ export default function QualyLeadsLanding() {
               ))}
             </div>
           </div>
-          <div className="fade-up fade-up-2" style={{ display:"flex", justifyContent:"center" }}>
-            <PhoneDemo />
-          </div>
+          <div className="fade-up fade-up-2" style={{ display:"flex", justifyContent:"center" }}><PhoneDemo /></div>
         </div>
       </section>
 
-      {/* INDUSTRY STRIP */}
       <div style={{ borderTop:`1px solid ${BORDER}`, borderBottom:`1px solid ${BORDER}`, background:SURFACE, padding:"18px 24px" }}>
         <div className="industry-strip">
           {["🏋️ Gyms","🔧 Plumbers","📈 Agencies","🧑‍💼 Coaches","🎥 Creators","🦷 Dentists"].map(l=>(
@@ -403,7 +413,6 @@ export default function QualyLeadsLanding() {
         </div>
       </div>
 
-      {/* ROI */}
       <section className="section-pad" style={{ maxWidth:900, margin:"0 auto" }}>
         <div style={{ textAlign:"center", marginBottom:48 }}>
           <div style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:ACCENT, letterSpacing:"0.1em", textTransform:"uppercase", marginBottom:14 }}>{t.dataTitle}</div>
@@ -414,9 +423,7 @@ export default function QualyLeadsLanding() {
         </div>
         <div style={{ border:`1px solid ${BORDER}`, borderRadius:16, overflow:"hidden" }}>
           <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", background:SURFACE, padding:"10px 20px", borderBottom:`1px solid ${BORDER}` }}>
-            {[t.dataCol1, t.dataCol2, t.dataCol3].map(h=>(
-              <div key={h} style={{ fontSize:10, color:MUTED, fontFamily:"'DM Mono',monospace", letterSpacing:"0.06em", textTransform:"uppercase" }}>{h}</div>
-            ))}
+            {[t.dataCol1,t.dataCol2,t.dataCol3].map(h=>(<div key={h} style={{ fontSize:10, color:MUTED, fontFamily:"'DM Mono',monospace", letterSpacing:"0.06em", textTransform:"uppercase" }}>{h}</div>))}
           </div>
           {ROI_DATA.map((row,i)=>(
             <div key={i} style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", padding:"12px 20px", background:row.highlight?"rgba(22,163,74,0.05)":(i%2===0?SURFACE:"#fff"), borderBottom:i<ROI_DATA.length-1?`1px solid ${BORDER}`:"none", borderLeft:row.highlight?`3px solid ${ACCENT}`:"3px solid transparent" }}>
@@ -439,7 +446,6 @@ export default function QualyLeadsLanding() {
         </div>
       </section>
 
-      {/* HOW IT WORKS */}
       <section className="section-pad-sm" style={{ background:SURFACE, borderTop:`1px solid ${BORDER}`, borderBottom:`1px solid ${BORDER}` }}>
         <div style={{ maxWidth:860, margin:"0 auto" }}>
           <div style={{ textAlign:"center", marginBottom:48 }}>
@@ -458,7 +464,6 @@ export default function QualyLeadsLanding() {
         </div>
       </section>
 
-      {/* FEATURES */}
       <section id="features" className="section-pad" style={{ maxWidth:1100, margin:"0 auto" }}>
         <div style={{ textAlign:"center", marginBottom:48 }}>
           <div style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:ACCENT, letterSpacing:"0.1em", textTransform:"uppercase", marginBottom:14 }}>{t.featuresBadge}</div>
@@ -475,12 +480,9 @@ export default function QualyLeadsLanding() {
         </div>
       </section>
 
-      {/* TESTIMONIAL */}
       <section className="section-pad-sm" style={{ background:SURFACE, borderTop:`1px solid ${BORDER}`, borderBottom:`1px solid ${BORDER}` }}>
         <div style={{ maxWidth:680, margin:"0 auto", textAlign:"center" }}>
-          <div style={{ fontFamily:"'DM Serif Display',serif", fontSize:"clamp(18px,3vw,28px)", lineHeight:1.4, fontStyle:"italic", marginBottom:24, color:TEXT }}>
-            {t.testimonial}
-          </div>
+          <div style={{ fontFamily:"'DM Serif Display',serif", fontSize:"clamp(18px,3vw,28px)", lineHeight:1.4, fontStyle:"italic", marginBottom:24, color:TEXT }}>{t.testimonial}</div>
           <div style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:12 }}>
             <div style={{ width:40, height:40, borderRadius:"50%", background:ACCENT, display:"flex", alignItems:"center", justifyContent:"center", fontSize:14, fontWeight:700, color:"#fff", flexShrink:0 }}>M</div>
             <div style={{ textAlign:"left" }}>
@@ -491,7 +493,6 @@ export default function QualyLeadsLanding() {
         </div>
       </section>
 
-      {/* WHATSAPP BANNER */}
       <section style={{ background:"#f0fdf4", borderTop:`1px solid #bbf7d0`, borderBottom:`1px solid #bbf7d0`, padding:"16px 24px" }}>
         <div style={{ maxWidth:1100, margin:"0 auto", display:"flex", alignItems:"center", justifyContent:"center", gap:12, flexWrap:"wrap" }}>
           <span style={{ fontSize:20 }}>💬</span>
@@ -501,19 +502,16 @@ export default function QualyLeadsLanding() {
         </div>
       </section>
 
-      {/* PRICING */}
       <section id="pricing" className="section-pad" style={{ maxWidth:1100, margin:"0 auto" }}>
         <div style={{ textAlign:"center", marginBottom:48 }}>
           <div style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:ACCENT, letterSpacing:"0.1em", textTransform:"uppercase", marginBottom:14 }}>{t.pricingBadge}</div>
           <h2 style={{ fontFamily:"'DM Serif Display',serif", fontSize:"clamp(28px,3.5vw,48px)", lineHeight:1.1, letterSpacing:"-0.02em", color:TEXT, marginBottom:14 }}>
             {t.pricingH2a}<br /><span style={{ fontStyle:"italic", color:ACCENT }}>{t.pricingH2b}</span>
           </h2>
-          <p style={{ fontSize:16, color:MUTED, maxWidth:500, margin:"0 auto 16px" }}>{t.pricingSub}</p>
-          <div style={{ display:"inline-flex", alignItems:"center", gap:8, background:"rgba(22,163,74,0.08)", border:"1px solid rgba(22,163,74,0.2)", borderRadius:20, padding:"6px 16px", fontSize:13, color:ACCENT, fontWeight:600 }}>
-            {t.pricingBanner}
-          </div>
-          {/* Currency toggle */}
-          <div style={{ display:"flex", justifyContent:"center", marginTop:16, gap:8 }}>
+          <p style={{ fontSize:16, color:MUTED, maxWidth:500, margin:"0 auto 8px" }}>{t.pricingSub}</p>
+          <p style={{ fontSize:13, color:ACCENT, fontWeight:500, maxWidth:560, margin:"0 auto 16px" }}>{t.pricingNote}</p>
+          <div style={{ display:"inline-flex", alignItems:"center", gap:8, background:"rgba(22,163,74,0.08)", border:"1px solid rgba(22,163,74,0.2)", borderRadius:20, padding:"6px 16px", fontSize:13, color:ACCENT, fontWeight:600 }}>{t.pricingBanner}</div>
+          <div style={{ display:"flex", justifyContent:"center", marginTop:16 }}>
             <div style={{ display:"inline-flex", background:SURFACE, border:`1px solid ${BORDER}`, borderRadius:24, padding:4 }}>
               {["USD","EUR"].map(c=>(
                 <button key={c} onClick={()=>setCurrency(c)} className="toggle-btn" style={{ padding:"6px 22px", borderRadius:20, border:"none", background:currency===c?ACCENT:"transparent", color:currency===c?"#fff":MUTED, fontSize:13, fontWeight:currency===c?600:400, cursor:"pointer", fontFamily:"inherit" }}>
@@ -523,9 +521,7 @@ export default function QualyLeadsLanding() {
             </div>
           </div>
         </div>
-
         <div className="pricing-grid">
-          {/* STARTER */}
           <div style={{ background:SURFACE, border:`1px solid ${BORDER}`, borderRadius:16, padding:28 }}>
             <div style={{ fontSize:12, fontWeight:600, color:MUTED, textTransform:"uppercase", letterSpacing:"0.06em", marginBottom:10 }}>{t.starterName}</div>
             <div style={{ display:"flex", alignItems:"baseline", gap:10, marginBottom:6 }}>
@@ -533,23 +529,10 @@ export default function QualyLeadsLanding() {
               <div style={{ fontSize:13, background:"rgba(22,163,74,0.1)", color:ACCENT, padding:"2px 10px", borderRadius:20, fontWeight:600 }}>→ {p.starterFirst} first month</div>
             </div>
             <div style={{ fontSize:12, color:MUTED, fontStyle:"italic", marginBottom:20 }}>{t.starterWho}</div>
-            {t.starterFeatures.map(f=>(
-              <div key={f} style={{ display:"flex", alignItems:"center", gap:8, marginBottom:7, fontSize:13, color:TEXT }}>
-                <span style={{ width:16, height:16, borderRadius:"50%", background:"rgba(22,163,74,0.1)", color:ACCENT, display:"flex", alignItems:"center", justifyContent:"center", fontSize:9, flexShrink:0 }}>✓</span>{f}
-              </div>
-            ))}
-            {[[t.missing1,t.comingSoon],[t.missing2,""],[t.missing3,""]].map(([f,tag])=>(
-              <div key={f} style={{ display:"flex", alignItems:"center", gap:8, marginBottom:7, fontSize:13, color:MUTED2 }}>
-                <span style={{ width:16, height:16, borderRadius:"50%", background:SURFACE2, display:"flex", alignItems:"center", justifyContent:"center", fontSize:9, flexShrink:0 }}>–</span>
-                {f}{tag && <span style={{ fontSize:10, background:"#f0fdf4", color:"#16a34a", padding:"1px 6px", borderRadius:10, fontWeight:600 }}>{tag}</span>}
-              </div>
-            ))}
-            <button className="cta-primary" style={{ width:"100%", marginTop:20, padding:"12px" }} onClick={()=>startCheckout("starter")}>
-              {checkoutLoading==="starter" ? t.loading : t.ctaBtn}
-            </button>
+            {t.starterFeatures.map(f=>(<div key={f} style={{ display:"flex", alignItems:"center", gap:8, marginBottom:7, fontSize:13, color:TEXT }}><span style={{ width:16, height:16, borderRadius:"50%", background:"rgba(22,163,74,0.1)", color:ACCENT, display:"flex", alignItems:"center", justifyContent:"center", fontSize:9, flexShrink:0 }}>✓</span>{f}</div>))}
+            {[[t.missing1,t.comingSoon],[t.missing2,""],[t.missing3,""]].map(([f,tag])=>(<div key={f} style={{ display:"flex", alignItems:"center", gap:8, marginBottom:7, fontSize:13, color:MUTED2 }}><span style={{ width:16, height:16, borderRadius:"50%", background:SURFACE2, display:"flex", alignItems:"center", justifyContent:"center", fontSize:9, flexShrink:0 }}>–</span>{f}{tag&&<span style={{ fontSize:10, background:"#f0fdf4", color:"#16a34a", padding:"1px 6px", borderRadius:10, fontWeight:600 }}>{tag}</span>}</div>))}
+            <button className="cta-primary" style={{ width:"100%", marginTop:20, padding:"12px" }} onClick={()=>startCheckout("starter")}>{checkoutLoading==="starter"?t.loading:t.ctaBtn}</button>
           </div>
-
-          {/* GROWTH */}
           <div style={{ background:"#fff", border:`2px solid ${ACCENT}`, borderRadius:16, padding:28, position:"relative", boxShadow:"0 8px 32px rgba(22,163,74,0.1)" }}>
             <div style={{ position:"absolute", top:-13, left:"50%", transform:"translateX(-50%)", background:ACCENT, color:"#fff", fontSize:11, fontWeight:600, padding:"3px 14px", borderRadius:20, whiteSpace:"nowrap" }}>{t.popular}</div>
             <div style={{ fontSize:12, fontWeight:600, color:ACCENT, textTransform:"uppercase", letterSpacing:"0.06em", marginBottom:10 }}>{t.growthName}</div>
@@ -558,23 +541,10 @@ export default function QualyLeadsLanding() {
               <div style={{ fontSize:13, background:"rgba(22,163,74,0.1)", color:ACCENT, padding:"2px 10px", borderRadius:20, fontWeight:600 }}>→ {p.growthFirst} first month</div>
             </div>
             <div style={{ fontSize:12, color:MUTED, fontStyle:"italic", marginBottom:20 }}>{t.growthWho}</div>
-            {t.growthFeatures.map(f=>(
-              <div key={f} style={{ display:"flex", alignItems:"center", gap:8, marginBottom:7, fontSize:13, color:TEXT }}>
-                <span style={{ width:16, height:16, borderRadius:"50%", background:"rgba(22,163,74,0.1)", color:ACCENT, display:"flex", alignItems:"center", justifyContent:"center", fontSize:9, flexShrink:0 }}>✓</span>{f}
-              </div>
-            ))}
-            {[[t.missing1,t.comingSoon],[t.missing3,""]].map(([f,tag])=>(
-              <div key={f} style={{ display:"flex", alignItems:"center", gap:8, marginBottom:7, fontSize:13, color:MUTED2 }}>
-                <span style={{ width:16, height:16, borderRadius:"50%", background:SURFACE2, display:"flex", alignItems:"center", justifyContent:"center", fontSize:9, flexShrink:0 }}>–</span>
-                {f}{tag && <span style={{ fontSize:10, background:"#f0fdf4", color:"#16a34a", padding:"1px 6px", borderRadius:10, fontWeight:600 }}>{tag}</span>}
-              </div>
-            ))}
-            <button className="cta-primary" style={{ width:"100%", marginTop:20, padding:"12px" }} onClick={()=>startCheckout("growth")}>
-              {checkoutLoading==="growth" ? t.loading : t.ctaBtn}
-            </button>
+            {t.growthFeatures.map(f=>(<div key={f} style={{ display:"flex", alignItems:"center", gap:8, marginBottom:7, fontSize:13, color:TEXT }}><span style={{ width:16, height:16, borderRadius:"50%", background:"rgba(22,163,74,0.1)", color:ACCENT, display:"flex", alignItems:"center", justifyContent:"center", fontSize:9, flexShrink:0 }}>✓</span>{f}</div>))}
+            {[[t.missing1,t.comingSoon],[t.missing3,""]].map(([f,tag])=>(<div key={f} style={{ display:"flex", alignItems:"center", gap:8, marginBottom:7, fontSize:13, color:MUTED2 }}><span style={{ width:16, height:16, borderRadius:"50%", background:SURFACE2, display:"flex", alignItems:"center", justifyContent:"center", fontSize:9, flexShrink:0 }}>–</span>{f}{tag&&<span style={{ fontSize:10, background:"#f0fdf4", color:"#16a34a", padding:"1px 6px", borderRadius:10, fontWeight:600 }}>{tag}</span>}</div>))}
+            <button className="cta-primary" style={{ width:"100%", marginTop:20, padding:"12px" }} onClick={()=>startCheckout("growth")}>{checkoutLoading==="growth"?t.loading:t.ctaBtn}</button>
           </div>
-
-          {/* PRO */}
           <div style={{ background:SURFACE, border:`1px solid ${BORDER}`, borderRadius:16, padding:28 }}>
             <div style={{ fontSize:12, fontWeight:600, color:MUTED, textTransform:"uppercase", letterSpacing:"0.06em", marginBottom:10 }}>{t.proName}</div>
             <div style={{ display:"flex", alignItems:"baseline", gap:10, marginBottom:6 }}>
@@ -582,25 +552,26 @@ export default function QualyLeadsLanding() {
               <div style={{ fontSize:13, background:"rgba(22,163,74,0.1)", color:ACCENT, padding:"2px 10px", borderRadius:20, fontWeight:600 }}>→ {p.proFirst} first month</div>
             </div>
             <div style={{ fontSize:12, color:MUTED, fontStyle:"italic", marginBottom:20 }}>{t.proWho}</div>
-            {t.proFeatures.map(f=>(
-              <div key={f} style={{ display:"flex", alignItems:"center", gap:8, marginBottom:7, fontSize:13, color:TEXT }}>
-                <span style={{ width:16, height:16, borderRadius:"50%", background:"rgba(22,163,74,0.1)", color:ACCENT, display:"flex", alignItems:"center", justifyContent:"center", fontSize:9, flexShrink:0 }}>✓</span>{f}
-              </div>
-            ))}
-            {[[t.missing1,t.comingSoon]].map(([f,tag])=>(
-              <div key={f} style={{ display:"flex", alignItems:"center", gap:8, marginBottom:7, fontSize:13, color:MUTED2 }}>
-                <span style={{ width:16, height:16, borderRadius:"50%", background:SURFACE2, display:"flex", alignItems:"center", justifyContent:"center", fontSize:9, flexShrink:0 }}>–</span>
-                {f}{tag && <span style={{ fontSize:10, background:"#f0fdf4", color:"#16a34a", padding:"1px 6px", borderRadius:10, fontWeight:600 }}>{tag}</span>}
-              </div>
-            ))}
-            <button className="cta-primary" style={{ width:"100%", marginTop:20, padding:"12px" }} onClick={()=>startCheckout("pro")}>
-              {checkoutLoading==="pro" ? t.loading : t.ctaBtn}
-            </button>
+            {t.proFeatures.map(f=>(<div key={f} style={{ display:"flex", alignItems:"center", gap:8, marginBottom:7, fontSize:13, color:TEXT }}><span style={{ width:16, height:16, borderRadius:"50%", background:"rgba(22,163,74,0.1)", color:ACCENT, display:"flex", alignItems:"center", justifyContent:"center", fontSize:9, flexShrink:0 }}>✓</span>{f}</div>))}
+            {[[t.missing1,t.comingSoon]].map(([f,tag])=>(<div key={f} style={{ display:"flex", alignItems:"center", gap:8, marginBottom:7, fontSize:13, color:MUTED2 }}><span style={{ width:16, height:16, borderRadius:"50%", background:SURFACE2, display:"flex", alignItems:"center", justifyContent:"center", fontSize:9, flexShrink:0 }}>–</span>{f}{tag&&<span style={{ fontSize:10, background:"#f0fdf4", color:"#16a34a", padding:"1px 6px", borderRadius:10, fontWeight:600 }}>{tag}</span>}</div>))}
+            <button className="cta-primary" style={{ width:"100%", marginTop:20, padding:"12px" }} onClick={()=>startCheckout("pro")}>{checkoutLoading==="pro"?t.loading:t.ctaBtn}</button>
           </div>
         </div>
       </section>
 
-      {/* CTA */}
+      <section className="section-pad" style={{ maxWidth:860, margin:"0 auto" }}>
+        <div style={{ textAlign:"center", marginBottom:48 }}>
+          <div style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:ACCENT, letterSpacing:"0.1em", textTransform:"uppercase", marginBottom:14 }}>{t.faqBadge}</div>
+          <h2 style={{ fontFamily:"'DM Serif Display',serif", fontSize:"clamp(26px,3.5vw,40px)", lineHeight:1.15, letterSpacing:"-0.02em", color:TEXT }}>{t.faqH2}</h2>
+        </div>
+        {t.faqs.map((item,i)=>(
+          <div key={i} style={{ padding:"24px 0", borderBottom:i<t.faqs.length-1?`1px solid ${BORDER}`:"none" }}>
+            <div style={{ fontSize:15, fontWeight:600, color:TEXT, marginBottom:8 }}>{item.q}</div>
+            <div style={{ fontSize:14, color:MUTED, lineHeight:1.7 }}>{item.a}</div>
+          </div>
+        ))}
+      </section>
+
       <section id="demo" className="section-pad" style={{ textAlign:"center", background:SURFACE, borderTop:`1px solid ${BORDER}` }}>
         <div style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:ACCENT, letterSpacing:"0.1em", textTransform:"uppercase", marginBottom:20 }}>{t.ctaBadge}</div>
         <h2 style={{ fontFamily:"'DM Serif Display',serif", fontSize:"clamp(32px,5vw,60px)", lineHeight:1.05, letterSpacing:"-0.03em", maxWidth:640, margin:"0 auto 16px", color:TEXT }}>
@@ -608,18 +579,19 @@ export default function QualyLeadsLanding() {
         </h2>
         <p style={{ fontSize:16, color:MUTED, maxWidth:400, margin:"0 auto 36px" }}>{t.ctaSub}</p>
         <button className="cta-primary" style={{ padding:"16px 40px", fontSize:16 }} onClick={()=>startCheckout("growth")}>
-          {checkoutLoading==="growth" ? t.loading : t.ctaBtn}
+          {checkoutLoading==="growth"?t.loading:t.ctaBtn}
         </button>
         <p style={{ fontSize:12, color:MUTED2, marginTop:14 }}>{t.ctaFooter}</p>
       </section>
 
-      {/* FOOTER */}
       <footer style={{ borderTop:`1px solid ${BORDER}`, padding:"28px 24px", background:"#fff" }}>
         <div className="footer-inner" style={{ maxWidth:1100, margin:"0 auto" }}>
           <img src={logoSrc} alt="QualyLeads" style={{ height:36, width:"auto" }} />
           <div style={{ fontSize:12, color:MUTED2 }}>{t.footerCopy}</div>
           <div style={{ display:"flex", gap:20 }}>
-            {[t.privacy, t.terms, t.contact].map(l=><span key={l} className="nav-link" style={{ fontSize:12 }}>{l}</span>)}
+            <a href="/privacy" className="nav-link" style={{ fontSize:12 }}>{t.privacy}</a>
+            <span className="nav-link" style={{ fontSize:12 }}>{t.terms}</span>
+            <span className="nav-link" style={{ fontSize:12 }}>{t.contact}</span>
           </div>
         </div>
       </footer>
