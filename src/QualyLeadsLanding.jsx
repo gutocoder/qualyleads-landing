@@ -45,6 +45,41 @@ const T = {
       { icon:"📊", title:"Live dashboard", body:"See every lead, every message, every status in real time. No spreadsheets." },
       { icon:"🔌", title:"Plug-in ready", body:"Connect your CRM, Zapier, or form tool in minutes. No code required." },
     ],
+    connectBadge: "Integrations",
+    connectH2: "Works with the tools you already use.",
+    connectSub: "Connect your lead source in minutes. No code required.",
+    connectTabs: ["Google Forms", "Typeform", "Zapier", "Facebook Ads"],
+    connectSteps: [
+      [
+        { n:"1", title:"Open your Google Form", body:"Go to Google Forms and open the form your leads use to contact you." },
+        { n:"2", title:"Open Apps Script", body:"Click the 3-dot menu → Script editor. This opens Google Apps Script." },
+        { n:"3", title:"Paste the trigger code", body:"Delete any existing code and paste this:\n\nfunction onFormSubmit(e) {\n  var name = e.values[1] || 'Lead';\n  var phone = e.values[2];\n  var payload = JSON.stringify({ name: name, phone: phone, industry: 'gym' });\n  var options = { method: 'post', contentType: 'application/json', payload: payload };\n  UrlFetchApp.fetch('YOUR_WEBHOOK_URL', options);\n}" },
+        { n:"4", title:"Add your webhook URL", body:"Replace YOUR_WEBHOOK_URL with your unique QualyLeads webhook URL from your dashboard → Clients tab." },
+        { n:"5", title:"Set the trigger", body:"Click Triggers (clock icon) → Add trigger → onFormSubmit → On form submit. Save." },
+        { n:"6", title:"Test it", body:"Submit a test entry in your Google Form. You should receive an SMS within 10 seconds! ✅" },
+      ],
+      [
+        { n:"1", title:"Open your Typeform", body:"Go to typeform.com and open the form your leads use." },
+        { n:"2", title:"Go to Connect → Webhooks", body:"In your form settings, click Connect → Webhooks → Add a webhook." },
+        { n:"3", title:"Paste your webhook URL", body:"Paste your QualyLeads webhook URL from your dashboard. Make sure to map: name, phone, and industry fields." },
+        { n:"4", title:"Test the webhook", body:"Click Send test request. You should receive an SMS within 10 seconds! ✅" },
+      ],
+      [
+        { n:"1", title:"Create a new Zap", body:"Go to zapier.com → Create Zap. Choose your trigger app — Google Forms, Facebook Lead Ads, HubSpot, or any other tool." },
+        { n:"2", title:"Set up the trigger", body:"Select the form or lead source you want to connect. Test it to confirm Zapier receives the data." },
+        { n:"3", title:"Add Webhooks by Zapier as action", body:"Search for Webhooks by Zapier → POST. This requires a Zapier Professional plan (~€20/mo)." },
+        { n:"4", title:"Configure the webhook", body:"URL: paste your QualyLeads webhook URL. Payload: map name, phone, and industry from your trigger data." },
+        { n:"5", title:"Turn on the Zap", body:"Test it, then publish. Every new lead will trigger Qualy within 10 seconds! ✅" },
+      ],
+      [
+        { n:"1", title:"Create a Facebook Lead Ad", body:"In Meta Ads Manager, create a new campaign → Lead generation objective → Instant Form." },
+        { n:"2", title:"Add name and phone fields", body:"In your Instant Form, add Full Name and Phone Number as required fields." },
+        { n:"3", title:"Connect via Zapier", body:"Go to zapier.com → Create Zap → Trigger: Facebook Lead Ads → Action: Webhooks by Zapier → POST." },
+        { n:"4", title:"Map the fields", body:"In Zapier, map: Full Name → name, Phone → phone, and set industry to your vertical (e.g. gym)." },
+        { n:"5", title:"Paste your webhook URL", body:"Use your QualyLeads webhook URL from your dashboard. Publish the Zap." },
+        { n:"6", title:"Launch your ad", body:"Every lead from your Facebook ad will be texted by Qualy within 10 seconds! ✅" },
+      ],
+    ],
     faqBadge: "FAQ",
     faqH2: "Good questions. Honest answers.",
     faqs: [
@@ -122,6 +157,41 @@ const T = {
       { icon:"📊", title:"Live dashboard", body:"Bekijk elke lead, elk bericht, elke status in realtime. Geen spreadsheets meer." },
       { icon:"🔌", title:"Direct te koppelen", body:"Verbind je CRM, Zapier of formuliertool in minuten. Geen code vereist." },
     ],
+    connectBadge: "Integraties",
+    connectH2: "Werkt met de tools die je al gebruikt.",
+    connectSub: "Koppel je leadbron in minuten. Geen code vereist.",
+    connectTabs: ["Google Forms", "Typeform", "Zapier", "Facebook Ads"],
+    connectSteps: [
+      [
+        { n:"1", title:"Open je Google Formulier", body:"Ga naar Google Formulieren en open het formulier dat je leads invullen." },
+        { n:"2", title:"Open Apps Script", body:"Klik op het 3-puntenmenu → Script editor. Dit opent Google Apps Script." },
+        { n:"3", title:"Plak de triggercode", body:"Verwijder bestaande code en plak dit:\n\nfunction onFormSubmit(e) {\n  var name = e.values[1] || 'Lead';\n  var phone = e.values[2];\n  var payload = JSON.stringify({ name: name, phone: phone, industry: 'gym' });\n  var options = { method: 'post', contentType: 'application/json', payload: payload };\n  UrlFetchApp.fetch('JOUW_WEBHOOK_URL', options);\n}" },
+        { n:"4", title:"Voeg je webhook URL toe", body:"Vervang JOUW_WEBHOOK_URL door je unieke QualyLeads webhook URL uit je dashboard → Clients tab." },
+        { n:"5", title:"Stel de trigger in", body:"Klik op Triggers (klokpictogram) → Trigger toevoegen → onFormSubmit → Bij formulierinzending. Opslaan." },
+        { n:"6", title:"Test het", body:"Dien een testinzending in via je Google Formulier. Je ontvangt binnen 10 seconden een SMS! ✅" },
+      ],
+      [
+        { n:"1", title:"Open je Typeform", body:"Ga naar typeform.com en open het formulier dat je leads gebruiken." },
+        { n:"2", title:"Ga naar Connect → Webhooks", body:"In je formulierinstellingen, klik Connect → Webhooks → Webhook toevoegen." },
+        { n:"3", title:"Plak je webhook URL", body:"Plak je QualyLeads webhook URL uit je dashboard. Zorg dat je name, phone en industry koppelt." },
+        { n:"4", title:"Test de webhook", body:"Klik op Testverzoek verzenden. Je ontvangt binnen 10 seconden een SMS! ✅" },
+      ],
+      [
+        { n:"1", title:"Maak een nieuwe Zap", body:"Ga naar zapier.com → Zap maken. Kies je trigger-app — Google Forms, Facebook Lead Ads, HubSpot, of een andere tool." },
+        { n:"2", title:"Stel de trigger in", body:"Selecteer het formulier of de leadbron die je wilt koppelen. Test het om te bevestigen dat Zapier de data ontvangt." },
+        { n:"3", title:"Voeg Webhooks by Zapier toe als actie", body:"Zoek naar Webhooks by Zapier → POST. Dit vereist een Zapier Professional abonnement (~€20/mnd)." },
+        { n:"4", title:"Configureer de webhook", body:"URL: plak je QualyLeads webhook URL. Payload: koppel name, phone en industry." },
+        { n:"5", title:"Activeer de Zap", body:"Test het en publiceer. Elke nieuwe lead activeert Qualy binnen 10 seconden! ✅" },
+      ],
+      [
+        { n:"1", title:"Maak een Facebook Lead Ad", body:"In Meta Ads Manager, maak een campagne → Lead generation doelstelling → Instant Form." },
+        { n:"2", title:"Voeg naam en telefoonvelden toe", body:"Voeg in je Instant Form Volledige naam en Telefoonnummer toe als verplichte velden." },
+        { n:"3", title:"Koppel via Zapier", body:"Ga naar zapier.com → Zap maken → Trigger: Facebook Lead Ads → Actie: Webhooks by Zapier → POST." },
+        { n:"4", title:"Koppel de velden", body:"In Zapier: Volledige naam → name, Telefoon → phone, en stel industry in op je branche (bijv. gym)." },
+        { n:"5", title:"Plak je webhook URL", body:"Gebruik je QualyLeads webhook URL uit je dashboard. Publiceer de Zap." },
+        { n:"6", title:"Start je advertentie", body:"Elke lead vanuit je Facebook-advertentie wordt binnen 10 seconden door Qualy getekst! ✅" },
+      ],
+    ],
     faqBadge: "Veelgestelde vragen",
     faqH2: "Goede vragen. Eerlijke antwoorden.",
     faqs: [
@@ -182,6 +252,17 @@ const ROI_DATA = [
   { time:"30 min", rate:"62%", bookings:"+8%", highlight:false },
   { time:"1 hour", rate:"36%", bookings:"-12%", highlight:false },
   { time:"24 hours", rate:"11%", bookings:"-64%", highlight:false },
+];
+
+const INTEGRATIONS = [
+  { name:"Google Forms", icon:"📋", color:"#4285f4", free:true },
+  { name:"Typeform", icon:"✍️", color:"#262627", free:true },
+  { name:"Facebook Ads", icon:"📘", color:"#1877f2", free:false },
+  { name:"Zapier", icon:"⚡", color:"#ff4a00", free:false },
+  { name:"Calendly", icon:"📅", color:"#006bff", free:true },
+  { name:"Google Calendar", icon:"🗓️", color:"#4285f4", free:true },
+  { name:"Webflow", icon:"🌊", color:"#4353ff", free:false },
+  { name:"WordPress", icon:"🔷", color:"#21759b", free:false },
 ];
 
 function PhoneDemo() {
@@ -270,6 +351,7 @@ export default function QualyLeadsLanding() {
   const [currency, setCurrency] = useState("USD");
   const [lang, setLang] = useState("en");
   const [checkoutLoading, setCheckoutLoading] = useState(null);
+  const [activeTab, setActiveTab] = useState(0);
   const t = T[lang];
   const prices = {
     USD: { starter:"$49", starterFirst:"$24.50", growth:"$99", growthFirst:"$49.50", pro:"$249", proFirst:"$124.50" },
@@ -309,6 +391,7 @@ export default function QualyLeadsLanding() {
         .pulse{animation:pulse-green 2s infinite;}
         .hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
         .features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+        .integrations-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
         .pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:start;}
         .stats-row{display:flex;gap:32px;padding-top:32px;border-top:1px solid ${BORDER};}
         .industry-strip{display:flex;justify-content:center;gap:40px;flex-wrap:wrap;}
@@ -320,10 +403,13 @@ export default function QualyLeadsLanding() {
         .section-pad-sm{padding:80px 40px;}
         .hero-pad{padding:80px 40px 60px;}
         .toggle-btn{transition:all 0.2s;}
+        .connect-tab{transition:all 0.2s;}
+        pre{background:#1e1e2e;color:#cdd6f4;padding:16px;borderRadius:8px;fontSize:12px;overflowX:auto;lineHeight:1.6;margin:8px 0 0;}
         @media(max-width:768px){
           .hero-grid{grid-template-columns:1fr;gap:48px;text-align:center;}
           .hero-grid .fade-up-2{order:1;}.hero-grid>div:first-child{order:2;}
           .features-grid{grid-template-columns:1fr;}
+          .integrations-grid{grid-template-columns:repeat(2,1fr);}
           .pricing-grid{grid-template-columns:1fr;}
           .stats-row{justify-content:center;gap:24px;}
           .industry-strip{gap:20px;}
@@ -338,6 +424,7 @@ export default function QualyLeadsLanding() {
         }
       `}</style>
 
+      {/* NAV */}
       <nav style={{ position:"sticky", top:0, zIndex:100, background:"rgba(255,255,255,0.95)", backdropFilter:"blur(12px)", borderBottom:`1px solid ${BORDER}` }}>
         <div style={{ padding:"0 24px", height:104, display:"flex", alignItems:"center", justifyContent:"space-between", maxWidth:1200, margin:"0 auto" }}>
           <img src={logoSrc} alt="QualyLeads" style={{ height:90, width:"auto" }} />
@@ -377,6 +464,7 @@ export default function QualyLeadsLanding() {
         </div>
       </nav>
 
+      {/* HERO */}
       <section style={{ maxWidth:1200, margin:"0 auto" }} className="hero-pad">
         <div className="hero-grid">
           <div>
@@ -405,6 +493,7 @@ export default function QualyLeadsLanding() {
         </div>
       </section>
 
+      {/* INDUSTRY STRIP */}
       <div style={{ borderTop:`1px solid ${BORDER}`, borderBottom:`1px solid ${BORDER}`, background:SURFACE, padding:"18px 24px" }}>
         <div className="industry-strip">
           {["🏋️ Gyms","🔧 Plumbers","📈 Agencies","🧑‍💼 Coaches","🎥 Creators","🦷 Dentists"].map(l=>(
@@ -413,6 +502,7 @@ export default function QualyLeadsLanding() {
         </div>
       </div>
 
+      {/* ROI */}
       <section className="section-pad" style={{ maxWidth:900, margin:"0 auto" }}>
         <div style={{ textAlign:"center", marginBottom:48 }}>
           <div style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:ACCENT, letterSpacing:"0.1em", textTransform:"uppercase", marginBottom:14 }}>{t.dataTitle}</div>
@@ -446,6 +536,7 @@ export default function QualyLeadsLanding() {
         </div>
       </section>
 
+      {/* HOW IT WORKS */}
       <section className="section-pad-sm" style={{ background:SURFACE, borderTop:`1px solid ${BORDER}`, borderBottom:`1px solid ${BORDER}` }}>
         <div style={{ maxWidth:860, margin:"0 auto" }}>
           <div style={{ textAlign:"center", marginBottom:48 }}>
@@ -464,6 +555,7 @@ export default function QualyLeadsLanding() {
         </div>
       </section>
 
+      {/* FEATURES */}
       <section id="features" className="section-pad" style={{ maxWidth:1100, margin:"0 auto" }}>
         <div style={{ textAlign:"center", marginBottom:48 }}>
           <div style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:ACCENT, letterSpacing:"0.1em", textTransform:"uppercase", marginBottom:14 }}>{t.featuresBadge}</div>
@@ -480,7 +572,74 @@ export default function QualyLeadsLanding() {
         </div>
       </section>
 
-      <section className="section-pad-sm" style={{ background:SURFACE, borderTop:`1px solid ${BORDER}`, borderBottom:`1px solid ${BORDER}` }}>
+      {/* INTEGRATIONS + TUTORIAL */}
+      <section id="connect" className="section-pad" style={{ background:SURFACE, borderTop:`1px solid ${BORDER}`, borderBottom:`1px solid ${BORDER}` }}>
+        <div style={{ maxWidth:1100, margin:"0 auto" }}>
+          <div style={{ textAlign:"center", marginBottom:48 }}>
+            <div style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:ACCENT, letterSpacing:"0.1em", textTransform:"uppercase", marginBottom:14 }}>{t.connectBadge}</div>
+            <h2 style={{ fontFamily:"'DM Serif Display',serif", fontSize:"clamp(26px,3.5vw,40px)", lineHeight:1.15, letterSpacing:"-0.02em", color:TEXT, marginBottom:12 }}>{t.connectH2}</h2>
+            <p style={{ fontSize:16, color:MUTED }}>{t.connectSub}</p>
+          </div>
+
+          {/* Integration logo grid */}
+          <div className="integrations-grid" style={{ marginBottom:48 }}>
+            {INTEGRATIONS.map((intg,i)=>(
+              <div key={i} style={{ background:BG, border:`1px solid ${BORDER}`, borderRadius:12, padding:"16px 20px", display:"flex", alignItems:"center", gap:12 }}>
+                <span style={{ fontSize:24 }}>{intg.icon}</span>
+                <div>
+                  <div style={{ fontSize:13, fontWeight:600, color:TEXT }}>{intg.name}</div>
+                  <div style={{ fontSize:11, color:intg.free?ACCENT:MUTED, fontWeight:500 }}>{intg.free?"Free":"Via Zapier"}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Tutorial tabs */}
+          <div style={{ background:BG, border:`1px solid ${BORDER}`, borderRadius:16, overflow:"hidden" }}>
+            {/* Tab bar */}
+            <div style={{ display:"flex", borderBottom:`1px solid ${BORDER}`, background:SURFACE, overflowX:"auto" }}>
+              {t.connectTabs.map((tab,i)=>(
+                <button key={i} onClick={()=>setActiveTab(i)} className="connect-tab" style={{
+                  padding:"14px 24px", border:"none", borderBottom:`2px solid ${activeTab===i?ACCENT:"transparent"}`,
+                  background:"transparent", color:activeTab===i?ACCENT:MUTED, fontSize:13, fontWeight:activeTab===i?600:400,
+                  cursor:"pointer", fontFamily:"inherit", whiteSpace:"nowrap",
+                }}>
+                  {tab}
+                </button>
+              ))}
+            </div>
+            {/* Steps */}
+            <div style={{ padding:32 }}>
+              <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:24 }}>
+                <span style={{ fontSize:11, fontWeight:600, background:activeTab===2||activeTab===3?"#fff7ed":"#f0fdf4", color:activeTab===2||activeTab===3?"#c2410c":ACCENT, border:`1px solid ${activeTab===2||activeTab===3?"#fed7aa":"#bbf7d0"}`, padding:"3px 10px", borderRadius:20 }}>
+                  {activeTab===2||activeTab===3?"Requires Zapier Professional (~€20/mo)":"✅ Free"}
+                </span>
+              </div>
+              {t.connectSteps[activeTab].map((step,i)=>(
+                <div key={i} style={{ display:"grid", gridTemplateColumns:"36px 1fr", gap:16, marginBottom:24, alignItems:"start" }}>
+                  <div style={{ width:36, height:36, borderRadius:"50%", background:"rgba(22,163,74,0.1)", color:ACCENT, display:"flex", alignItems:"center", justifyContent:"center", fontSize:13, fontWeight:700, flexShrink:0 }}>{step.n}</div>
+                  <div>
+                    <div style={{ fontSize:14, fontWeight:600, color:TEXT, marginBottom:4 }}>{step.title}</div>
+                    {step.body.includes("\n") ? (
+                      <>
+                        <div style={{ fontSize:13, color:MUTED, lineHeight:1.6, marginBottom:4 }}>{step.body.split("\n")[0]}</div>
+                        <pre style={{ background:"#1e1e2e", color:"#cdd6f4", padding:"14px 16px", borderRadius:8, fontSize:12, overflowX:"auto", lineHeight:1.6, margin:0 }}>
+                          {step.body.split("\n").slice(1).join("\n").trim()}
+                        </pre>
+                      </>
+                    ) : (
+                      <div style={{ fontSize:13, color:MUTED, lineHeight:1.6 }}>{step.body}</div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* TESTIMONIAL */}
+      <section className="section-pad-sm" style={{ borderTop:`1px solid ${BORDER}`, borderBottom:`1px solid ${BORDER}` }}>
         <div style={{ maxWidth:680, margin:"0 auto", textAlign:"center" }}>
           <div style={{ fontFamily:"'DM Serif Display',serif", fontSize:"clamp(18px,3vw,28px)", lineHeight:1.4, fontStyle:"italic", marginBottom:24, color:TEXT }}>{t.testimonial}</div>
           <div style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:12 }}>
@@ -493,6 +652,7 @@ export default function QualyLeadsLanding() {
         </div>
       </section>
 
+      {/* WHATSAPP BANNER */}
       <section style={{ background:"#f0fdf4", borderTop:`1px solid #bbf7d0`, borderBottom:`1px solid #bbf7d0`, padding:"16px 24px" }}>
         <div style={{ maxWidth:1100, margin:"0 auto", display:"flex", alignItems:"center", justifyContent:"center", gap:12, flexWrap:"wrap" }}>
           <span style={{ fontSize:20 }}>💬</span>
@@ -502,6 +662,7 @@ export default function QualyLeadsLanding() {
         </div>
       </section>
 
+      {/* PRICING */}
       <section id="pricing" className="section-pad" style={{ maxWidth:1100, margin:"0 auto" }}>
         <div style={{ textAlign:"center", marginBottom:48 }}>
           <div style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:ACCENT, letterSpacing:"0.1em", textTransform:"uppercase", marginBottom:14 }}>{t.pricingBadge}</div>
@@ -559,6 +720,7 @@ export default function QualyLeadsLanding() {
         </div>
       </section>
 
+      {/* FAQ */}
       <section className="section-pad" style={{ maxWidth:860, margin:"0 auto" }}>
         <div style={{ textAlign:"center", marginBottom:48 }}>
           <div style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:ACCENT, letterSpacing:"0.1em", textTransform:"uppercase", marginBottom:14 }}>{t.faqBadge}</div>
@@ -572,6 +734,7 @@ export default function QualyLeadsLanding() {
         ))}
       </section>
 
+      {/* CTA */}
       <section id="demo" className="section-pad" style={{ textAlign:"center", background:SURFACE, borderTop:`1px solid ${BORDER}` }}>
         <div style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:ACCENT, letterSpacing:"0.1em", textTransform:"uppercase", marginBottom:20 }}>{t.ctaBadge}</div>
         <h2 style={{ fontFamily:"'DM Serif Display',serif", fontSize:"clamp(32px,5vw,60px)", lineHeight:1.05, letterSpacing:"-0.03em", maxWidth:640, margin:"0 auto 16px", color:TEXT }}>
@@ -584,6 +747,7 @@ export default function QualyLeadsLanding() {
         <p style={{ fontSize:12, color:MUTED2, marginTop:14 }}>{t.ctaFooter}</p>
       </section>
 
+      {/* FOOTER */}
       <footer style={{ borderTop:`1px solid ${BORDER}`, padding:"28px 24px", background:"#fff" }}>
         <div className="footer-inner" style={{ maxWidth:1100, margin:"0 auto" }}>
           <img src={logoSrc} alt="QualyLeads" style={{ height:36, width:"auto" }} />
