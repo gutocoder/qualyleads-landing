@@ -53,8 +53,8 @@ const T = {
       [
         { n:"1", title:"Open your Google Form", body:"Go to Google Forms and open the form your leads use to contact you." },
         { n:"2", title:"Open Apps Script", body:"Click the 3-dot menu → Script editor. This opens Google Apps Script." },
-        { n:"3", title:"Paste the trigger code", body:"Delete any existing code and paste this:\n\nfunction onFormSubmit(e) {\n  var name = e.values[1] || 'Lead';\n  var phone = e.values[2];\n  var payload = JSON.stringify({ name: name, phone: phone, industry: 'gym' });\n  var options = { method: 'post', contentType: 'application/json', payload: payload };\n  UrlFetchApp.fetch('YOUR_WEBHOOK_URL', options);\n}" },
-        { n:"4", title:"Add your webhook URL", body:"Replace YOUR_WEBHOOK_URL with your unique QualyLeads webhook URL from your dashboard → Clients tab." },
+        { n:"3", title:"Paste the trigger code", body:"Delete any existing code and paste this:\n\nfunction onFormSubmit(e) {\n  var name = e.values[1] || 'Lead';\n  var phone = e.values[2];\n  // Change industry to: gym | plumber | coach | agency | solar | hvac\n  var payload = JSON.stringify({ name: name, phone: phone, industry: 'YOUR_INDUSTRY' });\n  var options = { method: 'post', contentType: 'application/json', payload: payload };\n  UrlFetchApp.fetch('YOUR_WEBHOOK_URL', options);\n}" },
+        { n:"4", title:"Set your industry + webhook URL", body:"Replace YOUR_INDUSTRY with your business type (gym, plumber, coach, agency, solar, or hvac). Replace YOUR_WEBHOOK_URL with your unique QualyLeads webhook URL from your dashboard → Clients tab." },
         { n:"5", title:"Set the trigger", body:"Click Triggers (clock icon) → Add trigger → onFormSubmit → On form submit. Save." },
         { n:"6", title:"Test it", body:"Submit a test entry in your Google Form. You should receive an SMS within 10 seconds! ✅" },
       ],
@@ -165,8 +165,8 @@ const T = {
       [
         { n:"1", title:"Open je Google Formulier", body:"Ga naar Google Formulieren en open het formulier dat je leads invullen." },
         { n:"2", title:"Open Apps Script", body:"Klik op het 3-puntenmenu → Script editor. Dit opent Google Apps Script." },
-        { n:"3", title:"Plak de triggercode", body:"Verwijder bestaande code en plak dit:\n\nfunction onFormSubmit(e) {\n  var name = e.values[1] || 'Lead';\n  var phone = e.values[2];\n  var payload = JSON.stringify({ name: name, phone: phone, industry: 'gym' });\n  var options = { method: 'post', contentType: 'application/json', payload: payload };\n  UrlFetchApp.fetch('JOUW_WEBHOOK_URL', options);\n}" },
-        { n:"4", title:"Voeg je webhook URL toe", body:"Vervang JOUW_WEBHOOK_URL door je unieke QualyLeads webhook URL uit je dashboard → Clients tab." },
+        { n:"3", title:"Plak de triggercode", body:"Verwijder bestaande code en plak dit:\n\nfunction onFormSubmit(e) {\n  var name = e.values[1] || 'Lead';\n  var phone = e.values[2];\n  // Verander industry naar: gym | plumber | coach | agency | solar | hvac\n  var payload = JSON.stringify({ name: name, phone: phone, industry: 'JOUW_BRANCHE' });\n  var options = { method: 'post', contentType: 'application/json', payload: payload };\n  UrlFetchApp.fetch('JOUW_WEBHOOK_URL', options);\n}" },
+        { n:"4", title:"Stel je branche en webhook URL in", body:"Vervang JOUW_BRANCHE door jouw type bedrijf (gym, plumber, coach, agency, solar of hvac). Vervang JOUW_WEBHOOK_URL door je unieke QualyLeads webhook URL uit je dashboard → Clients tab." },
         { n:"5", title:"Stel de trigger in", body:"Klik op Triggers (klokpictogram) → Trigger toevoegen → onFormSubmit → Bij formulierinzending. Opslaan." },
         { n:"6", title:"Test het", body:"Dien een testinzending in via je Google Formulier. Je ontvangt binnen 10 seconden een SMS! ✅" },
       ],
